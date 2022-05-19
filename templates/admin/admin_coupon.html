@@ -1,0 +1,158 @@
+{% extends 'admin/admin_base.html' %}  
+{% load static %}
+
+
+{% block content %}
+
+<div class="page-wrapper">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <div class="d-flex justify-content-between">
+                        <h3 class="box-title">Coupons</h3>
+                        <a href="{% url 'add_coupon' %}">
+                                <h4><b>+ Add Coupon</h4></b>
+                            </a>
+                        </div>
+
+                        {% if not coupon %}
+                        <img class="rounded mx-auto d-block mb-4"  src=" {% static 'assets/images/error-no-search-results_2353c5.png' %}" alt="">
+                        <h1 class="text-center">No Coupons Available</h1>
+                        {% else %}
+
+                    <div class="table-responsive">
+                        <table class="table text-wrap">
+                            <thead>
+                                <tr>
+                                    <th class="border-top-0">#</th>
+                                    <th class="border-top-0">Coupon Code</th>
+                                    <th class="border-top-0">Discount</th>
+                                    <th class="border-top-0">Valid From</th>
+                                    <th class="border-top-0">Valid To</th>
+                                    <th class="border-top-0">Is Active</th>
+                                    <th colspan="2" class="border-top-0 ">Actions</th>
+                                    
+                            </thead>
+                            <tbody>
+                                {% for c in coupon %}
+                                <tr>
+                                    <td>{{c.id}}</td>
+                                    <td>{{c.code}}</td>
+                                    <td>₹ {{c.discount}} off</td>
+                                    <td>{{c.valid_from}}</td>
+                                    <td>{{c.valid_to}}</td>
+                                    <td>{{c.is_active}}</td>
+                                    <td><a class="btn btn-warning" href="coupon/edit/{{c.id}}">Edit</a></td>
+                                    <td><a class="btn btn-danger text-light delete_btn" data-id = {{c.id}} >Delete</a></td>
+
+                                </tr>
+                               {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <nav aria-label="Page navigation example">
+              {% if categories.has_other_pages %}
+              <ul class="pagination d-flex justify-content-center">
+                  {% if categories.has_previous %}
+              <li class="page-item">
+                  <a class="page-link" href="?page={{ categories.previous_page_number}}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+              </li>
+              
+                  {% endif %}
+                {% for i in categories.paginator.page_range %}
+                  {% if categories.number == i %}
+                <li class="page-item"><a class="page-link" href="#">{{i}}</a></li>
+                  {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                  {% endif %}
+                {% endfor %}
+                
+                {% if categories.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ categories.next_page_number}}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+              </li>
+              {% endif %}
+              </ul>
+              {% endif %}
+            </nav>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End PAge Content -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Right sidebar -->
+        <!-- ============================================================== -->
+        <!-- .right-sidebar -->
+        <!-- ============================================================== -->
+        <!-- End Right sidebar -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Container fluid  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+   
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Page wrapper  -->
+<!-- ============================================================== -->
+{% block Scripts %}
+<script>
+
+    const delete_element = [...document.getElementsByClassName('delete_btn')]
+    
+    delete_element.forEach(delete_single_btn=>{
+        delete_single_btn.addEventListener('click',function(){
+            let value = delete_single_btn.dataset.id
+            
+            swal({
+                title: "Are you sure?",
+                text: "Do you want to delete this coupon?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+              })
+              .then((willDelete) => {
+                if (willDelete) {
+                    
+                  swal("Your coupon has been deleted!", {
+                    icon: "success",
+                    
+                  });
+                  window.location = `coupon/delete/${value}`
+                }   
+              });
+        })
+    })
+
+
+
+</script>
+
+{% endblock Scripts%}
+
+
+{% endblock %}
+

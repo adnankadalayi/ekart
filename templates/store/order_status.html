@@ -1,0 +1,133 @@
+{% extends 'store/base.html'%}
+
+{% block content %}
+
+<main class="main ">
+  
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Payments</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <div class="page-content">
+        <div class="checkout">
+            <div class="container">
+                <!-- <div class="checkout-discount">
+                    <form action="#">
+                        <input type="text" class="form-control"  id="checkout-discount-input">
+                        <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label>
+                    </form>
+                </div>End .checkout-discount -->
+                <form action="{% url 'place_order' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <h4>Order Status : <span class="text-primary">{{order.payment.status}}</span></h4>
+                            <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+                              
+                              
+                            <p>{{order.full_name}}</p>
+                            <p>{{order.full_address}}</p>
+                            <p>{{order.city}}, {{order.state}}</p>
+                            <p>{{order.country}}</p>
+                            <p>{{order.pin}}</p>
+                            <p>{{order.phone_number}}</p>
+                            <p>{{order.email}}</p>
+                            {% if order.order_note %}
+                            <b>Order Note : </b><p>{{order.order_note}}</p>
+                            {% endif %}
+
+
+                           
+                            
+                           
+                            <h2 class="checkout-title">Payment Methods</h2><!-- End .checkout-title -->
+                            <p>{{payment.payment_method}}</p>
+
+                            <h2 class="checkout-title">Products</h2><!-- End .checkout-title -->
+                            <table class="table table-cart table-mobile">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+    
+                                <tbody>
+                                    {% for cart_item in cart_items %}
+                                    <tr>
+                                        <td class="product-col col-lg-4">
+                                            <div class="product">
+                                                <figure class="product-media">
+                                                
+                                                        <img src="{{ cart_item.product.product_img_0.url}}" alt="Product image">
+                                               
+                                                </figure>
+    
+                                                <h3 class="product-title">
+                                                    <p>{{ cart_item.product.product_name}}</p>
+                                                </h3><!-- End .product-title -->
+                                            </div><!-- End .product -->
+                                        </td>
+                                        <td class="total-col col-lg-4">{{ cart_item.quantity }}</td>
+
+                                        <td class="total-col col-lg-4">₹{{ cart_item.sub_total }}</td>
+                                    </tr>
+                               
+                                   {% endfor %}
+                                </tbody>
+                            </table><!-- End .table table-wishlist -->
+
+
+                        </div><!-- End .col-lg-9 -->
+                        <aside class="col-lg-3">
+                            <div class="summary">
+
+                                <table class="table table-summary">
+                                   
+
+                                   
+
+                                        <!-- <tr>
+                                            <td><a href="#">{{ cart_item.product.product_name}}</a></td>
+                                            <td>₹{{cart_item.product.price}}</td>
+                                        </tr> -->
+                                        <tr class="summary-subtotal">
+                                            <td>Subtotal:</td>
+                                            <td>₹{{total}}</td>
+                                        </tr><!-- End .summary-subtotal -->
+                                        <tr>
+                                            <td>Shipping:</td>
+                                            <td>₹50</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tax:</td>
+                                            <td>₹{{tax}}</td>
+                                        </tr>
+                                        <tr class="summary-total">
+                                            <td>Total:</td>
+                                            <td>₹{{grand_total}}</td>
+                                        </tr><!-- End .summary-total -->
+                                    </tbody>
+                                </table><!-- End .table table-summary -->
+
+                               
+
+                                    <!-- <span class="btn-text">Place Order</span>
+                                    <span class="btn-hover-text">Proceed to Checkout</span> -->
+                            </div><!-- End .summary -->
+                        </aside><!-- End .col-lg-3 -->
+                    </div><!-- End .row -->
+                
+            </div><!-- End .container -->
+        </div><!-- End .checkout -->
+    </div><!-- End .page-content -->
+</main><!-- End .main -->
+
+{% endblock %}

@@ -1,0 +1,240 @@
+{% extends 'store/base.html' %}
+{% load mathfilters %}
+
+{% load static %}
+            {% block name%}
+            {% if guest_user %}
+                <h6 class="mt-1">Welcome&nbsp; <b class="text-info"> Guest User</b></h6>
+            {% else %}
+                <h6 class="mt-1">Welcome&nbsp; <b class="text-info"> {{ user.first_name }}</b></h6>
+            {% endif %}
+            {% endblock name%}
+
+    {% block content %}
+
+    
+
+        <main class="main">
+            <div class="intro-slider-container mb-5">
+                <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" 
+                    data-owl-options='{
+                        "dots": true,
+                        "nav": false, 
+                        "responsive": {
+                            "1200": {
+                                "nav": true,
+                                "dots": false
+                            }
+                        }
+                    }'>
+
+                    {% for banner in banners %}      
+                    <div class="intro-slide" style="background-image: url({{banner.image.url}});">
+                        <div class="container intro-content">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                        {% if banner.subtitle is None %}
+                                            {% else %}
+                                            <h3 class="intro-subtitle text-third">{{banner.subtitle}}</h3><!-- End .h3 intro-subtitle -->
+                                            {% endif %}
+                                    <h1 class="intro-title">{{banner.title}}</h1>
+
+                                    <div class="intro-price">
+                                        <span class="text-third">
+                                            {% if banner.price is None %}
+                                            {% else %}
+                                            ₹{{banner.price}}
+                                            {% endif %}
+                                        </span>
+                                    </div><!-- End .intro-price -->
+
+                                    <a href="{% url 'store' %}" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
+                                </div><!-- End .col-lg-11 offset-lg-1 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .intro-content -->
+                    </div><!-- End .intro-slide -->
+                    {% endfor %}
+
+                    
+                </div><!-- End .intro-slider owl-carousel owl-simple -->
+
+                <span class="slider-loader"></span><!-- End .slider-loader -->
+            </div><!-- End .intro-slider-container -->
+
+           
+
+            
+
+            <div class="mb-3"></div><!-- End .mb-5 -->
+
+
+               
+
+            <div class="mb-5"></div><!-- End .mb-5 -->
+
+            <div class="container for-you">
+                <div class="heading heading-flex mb-3">
+                    <div class="heading-left">
+                        <h2 class="title">Featured Products </h2><!-- End .title -->
+                    </div><!-- End .heading-left -->
+
+                   <div class="heading-right">
+                        <a href="{% url 'store' %}" class="title-link">View All <i class="icon-long-arrow-right"></i></a>
+                   </div><!-- End .heading-right -->
+                </div><!-- End .heading -->
+
+                <div class="products">
+                    <div class="row justify-content-center">
+                        
+
+                        
+                        {% for product in products %}
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="product product-2">
+                                    {% comment %} category offer badge {% endcomment %}
+                               
+                                
+                                <figure class="product-media">
+                                    <!--  product offer badge -->
+                                    {% if product.prod_offers.discount %}
+                                    <span class="product-label label-new">{{product.prod_offers.discount}}% off</span>
+                                    {% elif product.category.cate_offers.discount %}
+									<span class="product-label label-new">{{ product.category.cate_offers.discount}}% off</span>
+                                    {% else %}
+                                    {% endif %}
+                                    
+                                    <a href="{{ product.get_url }}">
+                                        <img src="{{product.product_img_0.url}}" alt="Product image" class="product-image" style="width:280px;"   >
+                                    </a>
+                                    
+                                    <!-- <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
+                                    </div>End .product-action -->
+                                    
+                                    <div class="product-action">
+                                        <a href="{% url 'add_cart' product.id %}" class="btn-product btn-cart" title="Add to cart"><span>add to cart</span></a>
+                                        <a href="{% url 'order_now' product.id %}" class="btn-product btn-cart" title="Add to cart"><span>buy now</span></a>
+                                    </div><!-- End .product-action -->
+                                </figure><!-- End .product-media -->
+                                
+                                <div class="product-body">
+                                    
+                                    
+                                    <div class="product-cat">
+                                        <a href="#">{{product.category}}</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title"><a href="{{ product.get_url }}">{{product.product_name}}</a></h3><!-- End .product-title -->
+                                    <div class="product-price">
+                                        {% if product.prod_offers.discount %}
+                                        ₹{{product.prod_offers.discount|mul:product.price|intdiv:100|sub:product.price|abs}}&nbsp;&nbsp;
+                                        <del class="text-light"> ₹ {{product.price}}</del>
+                                        {% elif product.category.cate_offers.discount %}
+                                        ₹{{product.category.cate_offers.discount|mul:product.price|intdiv:100|sub:product.price|abs}}&nbsp;&nbsp;
+                                        <del class="text-light"> ₹ {{product.price}}</del>
+                                        {% else %}
+                                        ₹ {{product.price}}
+                                        {% endif %}
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+                        {% endfor %}
+                    </div><!-- End .row -->
+                </div><!-- End .products -->
+            </div><!-- End .container -->
+
+            <div class="mb-4"></div><!-- End .mb-4 -->
+
+            <div class="container">
+                <hr class="mb-0">
+            </div><!-- End .container -->
+
+
+            <div class="container">
+                <div class="owl-carousel mt-5 mb-5 owl-simple" data-toggle="owl" 
+                    data-owl-options='{
+                        "nav": false, 
+                        "dots": false,
+                        "margin": 30,
+                        "loop": false,
+                        "responsive": {
+                            "0": {
+                                "items":2
+                            },
+                            "420": {
+                                "items":3
+                            },
+                            "600": {
+                                "items":4
+                            },
+                            "900": {
+                                "items":5
+                            },
+                            "1024": {
+                                "items":6
+                            }
+                        }
+                    }'>
+                    <a  class="brand">
+                        <img src="{% static 'assets/images/brands/1.png' %}" alt="Brand Name">
+                    </a>
+
+                    <a  class="brand">
+                        <img src="{% static 'assets/images/brands/2.png' %}" alt="Brand Name">
+                    </a>
+
+                    <a  class="brand">
+                        <img src="{% static 'assets/images/brands/3.png' %}" alt="Brand Name">
+                    </a>
+
+                    <a  class="brand">
+                        <img src="{% static 'assets/images/brands/4.png' %}" alt="Brand Name">
+                    </a>
+
+                    <a  class="brand">
+                        <img src="{% static 'assets/images/brands/5.png' %}" alt="Brand Name">
+                    </a>
+
+                    <a  class="brand">
+                        <img src="{% static 'assets/images/brands/6.png' %}" alt="Brand Name">
+                    </a>
+                </div><!-- End .owl-carousel -->
+                <hr class="mb-0">
+            </div><!-- End .container -->
+
+
+            <div class="container mt-4">
+                <h2 class="title text-center mb-4">Explore Popular Categories</h2><!-- End .title text-center -->
+                
+                <div class="cat-blocks-container ">
+                    <div class="row d-flex justify-content-around ">
+                        
+                        {% for category in links %}
+                        
+                        <div class="col-6 col-sm-4 col-lg-2">
+                            <a href="{{category.get_url}}" class="cat-block">
+                                <figure>
+                                    <span>
+                                        <img src="{{category.category_img.url}}" style="max-width: 50%;" alt="Category image">
+                                    </span>
+                                </figure>
+                                
+                                <h3 class="cat-block-title">{{category.category_name}}</h3><!-- End .cat-block-title -->
+                            </a>
+                        </div><!-- End .col-sm-4 col-lg-2 -->
+                        
+                        {% endfor %}
+                        
+                    </div><!-- End .row -->
+                </div><!-- End .cat-blocks-container -->
+            </div><!-- End .container -->
+
+            <div class="mb-4"></div><!-- End .mb-4 -->
+
+            
+
+            
+    {% endblock %}

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+{% load static %}
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords"
+        content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, Ample lite admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, Ample admin lite dashboard bootstrap 5 dashboard template">
+    <meta name="description"
+        content="Ample Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Admin</title>
+    <link rel="canonical" href="{% static 'https://www.wrappixel.com/templates/ample-admin-lite/' %}" />
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'admin/plugins/images/favicon.png' %}">
+    <!-- Custom CSS -->
+    <link href="{% static 'admin/plugins/bower_components/chartist/dist/chartist.min.css' %}" rel="stylesheet'">
+    <link rel="stylesheet" href="{% static 'admin/plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css' %}">
+    <!-- Custom CSS -->
+    <link href="{% static 'admin/css/style.min.css' %}" rel="stylesheet">
+    <!-- cropper css -->
+    <link href="{% static 'admin/croppr.css' %}" rel="stylesheet">
+    <!--Chartjs CDN-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+ 
+    
+    <style>
+        .errorlist{
+            color: red !important ;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
+        data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <header class="topbar " data-navbarbg="skin5">
+            <nav class="navbar  top-navbar navbar-expand-md navbar-dark">
+                <div class="navbar-header" data-logobg="skin6">
+                    <!-- ============================================================== -->
+                    <!-- Logo -->
+                    <!-- ============================================================== -->
+                    <a class="navbar-brand" href="dashboard.html">
+                        <!-- Logo icon -->
+                        <b class="logo-icon">
+                            <!-- Dark Logo icon -->
+                            <img src="{% static 'admin/plugins/images/logo-icon.png' %}" alt="homepage" />
+                        </b>
+                        <!--End Logo icon -->
+                        <!-- Logo text -->
+                        <span class="logo-text">
+                            <!-- dark Logo text -->
+                            <img src="{% static 'admin/plugins/images/logo-text.png' %}" alt="homepage" />
+                        </span>
+                    </a>
+                    <!-- ============================================================== -->
+                    <!-- End Logo -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <!-- toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <a class="nav-toggler waves-effect waves-light text-dark d-block d-md-none"
+                        href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+                {% comment %} here  i added position {% endcomment %}
+                <div class="navbar-collapse collapse position-fixed" id="navbarSupportedContent" data-navbarbg="skin5">
+                   
+                    <!-- ============================================================== -->
+                    <!-- Right side toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav ms-auto d-flex align-items-center">
+
+                        <!-- ============================================================== -->
+                        <!-- Search -->
+                        <!-- ============================================================== -->
+                        <li class=" in">
+                            <form role="search" class="app-search d-none d-md-block me-3">
+                                <input type="text" name="keyword" placeholder="Search..." class="form-control mt-0">
+                                <a href="{% url 'admin_search' %}" class="active">
+                                    <!-- <i class="fa fa-search"></i> -->
+                                    <button type="submit"><i class="fa fa-search"></i></i></button>
+                                </a>
+                            </form>
+                        </li>
+                        <!-- ============================================================== -->
+                        <!-- User profile and search -->
+                        <!-- ============================================================== -->
+                        <li>
+                            <a class="profile-pic" href="#">
+                                <img src="{% static 'admin/plugins/images/users/d1.jpg' %}" alt="user-img" width="36"
+                                    class="img-circle"><span class="text-white font-medium">Admin</span></a>
+                        </li>
+                        <li>
+                            <a class="profile-pic" href="{% url 'admin_logout' %}">
+                              <b>Logout<b></a>
+                        </li>
+                        <!-- ============================================================== -->
+                        <!-- User profile and search -->
+                        <!-- ============================================================== -->
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- ============================================================== -->
+        <!-- End Topbar header -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        {% comment %} here also I added position {% endcomment %}
+        <aside class="left-sidebar position-fixed" data-sidebarbg="skin6">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <!-- User Profile-->
+                        <li class="sidebar-item pt-2">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'dashboard' %}"
+                                aria-expanded="false">
+                                <i class=" fas fa-chart-bar" aria-hidden="true"></i>
+                                <span class="hide-menu">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user' %}"
+                                aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <span class="hide-menu">User</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'product' %}"
+                                aria-expanded="false">
+                                <i class="fa fa-cube" aria-hidden="true"></i>
+                                <span class="hide-menu">Products</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'product_offers' %}"
+                                aria-expanded="false">
+                                <i class=" fas fa-tag" aria-hidden="true"></i>
+                                <span class="hide-menu">Product Offers</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'order' %}"
+                                aria-expanded="false">
+                                <i class="fa fa-cubes" aria-hidden="true"></i>
+                                <span class="hide-menu">Orders</span>
+                            </a>
+                        </li>
+                        
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'category' %}"
+                            aria-expanded="false">
+                            <i class="fa fa-columns" aria-hidden="true"></i>
+                            <span class="hide-menu">Category</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'category_offers' %}"
+                            aria-expanded="false">
+                            <i class=" fas fa-tags" aria-hidden="true"></i>
+                            <span class="hide-menu">Category Offers</span>
+                        </a>
+                    </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'banner' %}"
+                                aria-expanded="false">
+                                <i class="fa fa-window-maximize" aria-hidden="true"></i>    
+                                <span class="hide-menu">Banner</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'report' %}"
+                                aria-expanded="false">
+                                <i class=" fas fa-clipboard-list" aria-hidden="true"></i>    
+                                <span class="hide-menu">Report</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'coupon' %}"
+                                aria-expanded="false">
+                                <i class="  fas fa-ticket-alt" aria-hidden="true"></i>    
+                                <span class="hide-menu">Coupon</span>
+                            </a>
+                        </li>
+                       
+                    </ul>
+
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        
+
+
+{% block content %}
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+        
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="{% static 'admin/plugins/bower_components/jquery/dist/jquery.min.js' %}"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="{% static 'admin/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'admin/js/app-style-switcher.js' %}"></script>
+    <script src="{% static 'admin/plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js' %}"></script>
+    <!--Wave Effects -->
+    <script src="{% static 'admin/js/waves.js' %}"></script>
+    <!-- sweet alert flashmessage -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        {% for msg in messages %}
+                swal('{{msg}}')
+        {% endfor %}
+    </script>
+
+    <!--Menu sidebar -->
+    <script src="{% static 'admin/js/sidebarmenu.js' %}"></script>
+    <!--Custom JavaScript -->
+    <script src="{% static 'admin/js/custom.js' %}"></script>
+    <!--This page JavaScript -->
+    <!--chartis chart-->
+    <script src="{% static 'admin/plugins/bower_components/chartist/dist/chartist.min.js' %}"></script>
+    <script src="{% static 'admin/plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js' %}"></script>
+    <script src="{% static 'admin/js/pages/dashboards/dashboard1.js' %}"></script>
+    <!-- croppr js -->
+    <script src="{% static 'admin/croppr.js' %}"></script>
+    <!-- field validtion -->
+    <script>
+         // Example starter JavaScript for disabling form submissions if there are invalid fields
+         (function () {
+            'use strict'
+  
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+  
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+              .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                  if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                  }
+  
+                  form.classList.add('was-validated')
+                }, false)
+              })
+          })()
+  
+    </script>
+        {% block scripts %}
+
+    {% endblock scripts %}
+
+    
+    
+</body>
+
+</html>

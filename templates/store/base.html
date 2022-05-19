@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+
+
+<!-- eKart/index-4.html  22 Nov 2019 09:53:08 GMT -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>eKart</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/images/ekart-logo.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/images/ekart-logo.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/images/ekart-logo.png' %}">
+    <link rel="manifest" href="{% static 'assets/images/icons/site.html' %}">
+    <link rel="mask-icon" href="{% static 'assets/images/icons/safari-pinned-tab.svg' %}" color="#666666">
+    <link rel="shortcut icon" href="{% static 'assets/images/ekart-logo.png' %}">
+    <meta name="apple-mobile-web-app-title" content="eKart">
+    <meta name="application-name" content="eKart">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="{% static 'assets/images/icons/browserconfig.xml' %}">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet"
+        href="{% static 'assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css' %}">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/owl-carousel/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/magnific-popup/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/jquery.countdown.css' %}">
+    <!-- zoom -->
+    <link rel="stylesheet" href="{% static 'assets/magiczoomplus.css' %}">
+    <script src="{% static 'assets/magiczoomplus.js' %}"></script>
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/skins/skin-demo-4.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/demos/demo-4.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/demos/demo-4.css' %}">
+    <!-- for snippet  -->
+
+
+    <style>
+        .errorlist {
+            color: red;
+        }
+    </style>
+    <!-- fontawesome -->
+    <script>'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css'</script>
+    <!-- jquery min cdn -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <!-- <script>
+
+        // cookie cart for guest user
+        function getCookie(name) {
+            // Split cookie string and get all individual name=value pairs in an array
+            var cookieArr = document.cookie.split(";");
+
+            // Loop through the array elements
+            for (var i = 0; i < cookieArr.length; i++) {
+                var cookiePair = cookieArr[i].split("=");
+
+                /* Removing whitespace at the beginning of the cookie name
+                and compare it with the given string */
+                if (name == cookiePair[0].trim()) {
+                    // Decode the cookie value and return 
+                    return decodeURIComponent(cookiePair[1]);
+                }
+            }
+            //  Return null if not found
+            return null;
+        }
+        var cart = JSON.parse(getCookie('cart'))
+        if (cart == undefined) {
+            cart = {}
+            console.log('cart is created')
+            document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+        }
+        console.log('Cart: ', cart)
+
+
+    </script>  -->
+    {% comment %} guest user cart  {% endcomment %}
+    <!-- <script>
+        let user = "{{request.user}}";
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        //const csrftoken = getCookie('csrftoken');
+		//function uuidv4() {
+        //    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        //      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        //      return v.toString(16);
+        //    });
+        //  }
+//
+//
+        //let device = getCookie('device')
+//
+        //if (device == null || device == undefined) {
+        //    device = uuidv4()
+        //}
+//
+        //document.cookie = "device=" + device + ';domain=;path=/'
+    </script> -->
+
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header header-intro-clearance header-4">
+            <div class="header-top">
+                <div class="container">
+                    <div class="header-left">
+                    </div><!-- End .header-left -->
+
+                    <div class="header-right">
+
+                        {% if user.id is None %}
+                        <h6 class="mt-1"><a href="{% url 'loginPage' %}">Sign in</a>&nbsp;</h6>
+                        <h6 class="mt-1"><a href="{% url 'register' %}">Sign up</a></h6>
+                        {% else %}
+                        {% block name%}
+                       {% endblock name%}
+                       
+                        {% endif %}
+                               
+                    </div><!-- End .header-right -->
+
+                </div><!-- End .container -->
+            </div><!-- End .header-top -->
+
+            <div class="header-middle">
+                <div class="container">
+                    <div class="header-left">
+                        
+                        
+
+                        <a href="{% url 'home' %}" class="logo">
+                            <img src="{% static 'assets/images/ekart_logo_1.png' %}" alt="eKart Logo" width="100%" >
+                        </a>
+                    </div><!-- End .header-left -->
+
+                    <div class="header-center">
+                        <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
+                            <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+                            <form novalidate action="{% url 'search' %}" method="get">
+                                <div class="header-search-wrapper search-wrapper-wide">
+                                    <label for="q" class="sr-only">Search</label>
+                                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                                    <input type="search" class="form-control" name="keyword" id="q"
+                                        placeholder="Search product ..." required>
+                                </div><!-- End .header-search-wrapper -->
+                            </form>
+                        </div><!-- End .header-search -->
+                    </div>
+
+                    <div class="header-right">
+
+                        <div class="dropdown compare-dropdown">
+                            <a href="{% url 'user_orders' %}" class="dropdown-toggle" role="button">
+                                <div class="icon">
+                                    <i class="icon-user"></i>
+                                </div>
+                                <p>Account</p>
+                            </a>
+
+
+                        </div><!-- End .compare-dropdown -->
+
+
+                        <!-- <div class="wishlist">
+                            <a href="{% url 'cart' %}" title="Wishlist">
+                                <div class="icon">
+                                    <i class="icon-heart-o"></i>    
+                                    <span class="wishlist-count badge">3</span>
+                                </div>
+                                <p>Wishlist</p>
+                            </a>
+                        </div>End .compare-dropdown -->
+
+                        <div class="dropdown cart-dropdown">
+                            <a href="{% url 'cart' %}" class="dropdown-toggle" role="button">
+                                <div class="icon">
+                                    <i class="icon-shopping-cart"></i>
+                                    <span class="cart-count">{{cart_count}}</span>
+                                </div>
+                                <p>Cart</p>
+                            </a>
+                        </div><!-- End .cart-dropdown -->
+                    </div><!-- End .header-right -->
+                </div><!-- End .container -->
+            </div><!-- End .header-middle -->
+
+
+
+
+            <div class="header-bottom sticky-header">
+                <div class="container  justify-content-around">
+
+
+                    <div class="header-center display-flex justify-content-around">
+                        <nav class="main-nav ">
+                            <ul class="menu sf-arrows">
+                                <li {% if request.resolver_match.url_name == 'home' %} class="megamenu-container active" {% endif %} >
+                                    <a href="/">Home</a>
+                                </li>
+                                {% for category in links %}
+                                <li {% if request.resolver_match.url_name == '{{category.slug}}' %} class="megamenu-container active" {% endif %}>
+                                    <a href="{{category.get_url}}">{{category.category_name}}</a>
+                                </li>
+                                {% endfor %}
+                                <li {% if request.resolver_match.url_name == 'store' %} class="megamenu-container active" {% endif %}>
+                                    <a href="{% url 'store' %}">All Products</a>
+
+                                </li>
+
+                            </ul><!-- End .menu -->
+                        </nav><!-- End .main-nav -->
+                    </div>
+                    <!--End .header-center -->
+
+
+
+                    <!-- shop, home etc, -->
+
+                </div><!-- End .container -->
+            </div><!-- End .header-bottom -->
+        </header><!-- End .header -->
+
+
+
+        {% block content %}
+
+
+
+
+
+        {% endblock %}
+
+        <div class="icon-boxes-container bg-transparent">
+            <div class="container">
+                <hr>
+                <div class="row mb-3">
+                    <div class="col-sm-3 col-lg-3">
+                        <div class="icon-box icon-box-side">
+                            <span class="icon-box-icon text-dark">
+                                <i class="icon-rocket"></i>
+                            </span>
+                            <div class="icon-box-content">
+                                <h3 class="icon-box-title">Shipping </h3><!-- End .icon-box-title -->
+                                <p>Only For ₹50 </p>
+                            </div><!-- End .icon-box-content -->
+                        </div><!-- End .icon-box -->
+                    </div><!-- End .col-sm-6 col-lg-3 -->
+
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="icon-box icon-box-side">
+                            <span class="icon-box-icon text-dark">
+                                <i class="icon-rotate-left"></i>
+                            </span>
+
+                            <div class="icon-box-content">
+                                <h3 class="icon-box-title">Free Returns</h3><!-- End .icon-box-title -->
+                                <p>Within 30 days</p>
+                            </div><!-- End .icon-box-content -->
+                        </div><!-- End .icon-box -->
+                    </div><!-- End .col-sm-6 col-lg-3 -->
+
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="icon-box icon-box-side">
+                            <span class="icon-box-icon text-dark">
+                                <i class="icon-info-circle"></i>
+                            </span>
+
+                            <div class="icon-box-content">
+                                <h3 class="icon-box-title">Get 20% Off 1 Item</h3><!-- End .icon-box-title -->
+                                <p>when buy above ₹10000</p>
+                            </div><!-- End .icon-box-content -->
+                        </div><!-- End .icon-box -->
+                    </div><!-- End .col-sm-6 col-lg-3 -->
+
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="icon-box icon-box-side">
+                            <span class="icon-box-icon text-dark">
+                                <i class="icon-life-ring"></i>
+                            </span>
+
+                            <div class="icon-box-content">
+                                <h3 class="icon-box-title">We Support</h3><!-- End .icon-box-title -->
+                                <p>24/7 amazing services</p>
+                            </div><!-- End .icon-box-content -->
+                        </div><!-- End .icon-box -->
+                    </div><!-- End .col-sm-6 col-lg-3 -->
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+
+
+        <footer class="footer">
+
+            <div class="footer-middle">
+                <div class="container justify-content-around">
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="widget widget-about">
+                                <img src="{% static 'assets/images/ekart_logo_1.png' %}" class="footer-logo" alt="Footer Logo"
+                                    width="105" height="25">
+                                <p>You can buy Different types of Electronics Here. </p>
+                                <p>Happy Shopping... </p>
+
+                                <div class="widget-call">
+                                    <i class="icon-phone"></i>
+                                    Got Question? Call Someone else
+                                    <!-- <a href="tel:#">+0123 456 789</a>          -->
+                                </div><!-- End .widget-call -->
+                            </div><!-- End .widget about-widget -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+
+                        <div class="col-md-3 ">
+                            <div class="widget">
+                                <h4 class="widget-title">Contact Us</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="https://www.instagram.com/ad.nan_k/">Instagram</a></li>
+                                    <li><a href="https://www.facebook.com/adnan.kadalayi.18">Facebook</a></li>
+                                    <li><a
+                                            href="https://api.whatsapp.com/send/?phone=9497099873&text&app_absent=0">Whatsapp</a>
+                                    </li>
+                                    <li><a href="https://github.com/adnankadalayi">GitHub</a></li>
+
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+
+                        <!-- <div class="col-sm-6 col-lg-3">
+                        <div class="widget">
+                            <h4 class="widget-title">Customer Service</h4><!-- End .widget-title --
+
+                            <ul class="widget-list">
+                                <li><a href="#">Payment Methods</a></li>
+                                <li><a href="#">Returns</a></li>
+                                <li><a href="#">Shipping</a></li>
+                                <li><a href="#">Terms and conditions</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                            </ul><!-- End .widget-list --
+                        </div><!-- End .widget --
+                    </div>End .col-sm-6 col-lg-3 -->
+
+                        <div class="col-md-3">
+                            <div class="widget">
+                                <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    {% if user.id is None %}
+                                    <li><a href="{% url 'loginPage' %}">Sign in</a></li>
+                                    {% else %}
+
+                                    {% endif %}
+                                    <li><a href="{% url 'cart' %}">View Cart</a></li>
+                                    <!-- <li><a href="#">My Wishlist</a></li> -->
+                                    <li><a href="{% url 'user_orders' %}">Track My Order</a></li>
+                                    <li><a href="#">Help</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-middle -->
+
+            <div class="footer-bottom">
+                <div class="container">
+                    <figure class="footer-payments">
+                        <img src="{% static 'assets/images/payments.png' %}" alt="Payment methods" width="272"
+                            height="20">
+                    </figure><!-- End .footer-payments -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-bottom -->
+        </footer><!-- End .footer -->
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+
+
+    <!-- FOOTER END -->
+
+            
+
+
+    <!-- Plugins JS File -->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.hoverIntent.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'assets/js/superfish.min.js' %}"></script>
+    <script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap-input-spinner.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.plugin.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.countdown.min.js' %}"></script>
+    <!-- Main JS File -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <script src="{% static 'assets/js/demos/demo-4.js' %}"></script>
+
+    <!-- sweet alert flash message -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        {% for msg in messages %}
+        swal('{{msg}}')
+        {% endfor %}
+    </script>
+    <!-- field validtion -->
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+
+    </script>
+
+    {% block scripts %}
+
+    {% endblock scripts %}
+    <!-- custom razorpay checkout js -->
+    <script src="{% static 'assets/custom.js' %}"></script>
+
+
+</body>
+
+
+<!-- eKart/index-4.html  22 Nov 2019 09:54:18 GMT -->
+
+</html>

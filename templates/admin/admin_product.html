@@ -1,0 +1,168 @@
+{% extends 'admin/admin_base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="page-wrapper">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <div class="d-flex justify-content-between">
+                        <h3 class="box-title">Products</h3>
+                        <a href="{% url 'add_product' %}">
+                                <h4><b>+ Add Product</h4></b>
+                            </a>
+                        </div>
+
+                        {% if not products %}
+                        <img class="rounded mx-auto d-block mb-4"  src=" {% static 'assets/images/error-no-search-results_2353c5.png' %}" alt="">
+                        <h1 class="text-center" >No Products Available</h1>
+                        {% else %}
+
+                    <div class="table-responsive">
+                        <table class="table text-wrap">
+                            <thead>
+                                <tr>
+                                    <th class="border-top-0">#</th>
+                                    <th class="border-top-0">Preview</th>
+                                    <th class="border-top-0">Product Name</th>
+                                    <th class="border-top-0">Price</th>
+                                    <th class="border-top-0">Category</th>
+                                    <th class="border-top-0">Stock</th>
+                                    <th class="border-top-0">Modified Date</th>
+                                    <th class="border-top-0">Is Available</th>
+                                    <th colspan="2" class="border-top-0 ">Actions</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in products %}
+                                <tr>
+                                    <td>{{product.id}}</td>
+                                    <td>
+                                        <img class="img-responsive thumbnail" style="width: 20%;" src="{{product.product_img_0.url}}" >
+                                    </td>
+
+                                    <td>{{product.product_name}}</td>
+                                    <td>{{product.price}}</td>
+                                    <td>{{product.category}}</td>
+                                    <td>{{product.stock}}</td>
+                                    <td>{{product.modified_date}}</td>
+                                    <td>{{product.is_available}}</td>
+                                    <td><a class="btn btn-warning" href="product/edit/{{product.id}}">Edit</a></td>
+                                    <td><a class="btn btn-danger text-light delete_btn"
+                                            data-id={{product.id}}>Delete</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <nav aria-label="Page navigation example">
+                {% if products.has_other_pages %}
+                <ul class="pagination d-flex justify-content-center">
+                    {% if products.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ products.previous_page_number}}" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                
+                    {% endif %}
+                  {% for i in products.paginator.page_range %}
+                    {% if products.number == i %}
+                  <li class="page-item"><a class="page-link" href="#">{{i}}</a></li>
+                    {% else %}
+                  <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  
+                  {% if products.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ products.next_page_number}}" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+                </ul>
+                {% endif %}
+              </nav>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End PAge Content -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Right sidebar -->
+        <!-- ============================================================== -->
+        <!-- .right-sidebar -->
+        <!-- ============================================================== -->
+        <!-- End Right sidebar -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Container fluid  -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Page wrapper  -->
+<!-- ============================================================== -->
+{% block Scripts %}
+<script>
+
+    const delete_element = [...document.getElementsByClassName('delete_btn')]
+
+    delete_element.forEach(delete_single_btn => {
+        delete_single_btn.addEventListener('click', function () {
+            let value = delete_single_btn.dataset.id
+
+            swal({
+                title: "Are you sure?",
+                text: "Do you want to delete this product?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                closeOnConfirm: false,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        swal("Your product has been deleted!", {
+
+                            icon: "success",
+
+
+                        });
+                        window.location = `product/delete/${value}`
+                    }
+                });
+        })
+    })
+
+
+
+</script>
+
+{% endblock Scripts%}
+
+
+
+{% endblock %}

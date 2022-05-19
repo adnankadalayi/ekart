@@ -1,0 +1,202 @@
+{% extends 'admin/admin_base.html' %}  
+{% load static %}
+
+
+{% block content %}
+
+<div class="page-wrapper">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <h3 class="box-title">Users</h3>
+
+                    {% if not user_details %}
+                    <img class="rounded mx-auto d-block mb-4"  src=" {% static 'assets/images/error-no-search-results_2353c5.png' %}" alt="">
+                    <h1 class="text-center">No Users Available</h1>
+                    {% else %}
+
+                    <div class="table-responsive">
+                        <table class="table text-wrap">
+                            <thead>
+                                <tr>
+                                    <th class="border-top-0">#</th>
+                                    <th class="border-top-0">First Name</th>
+                                    <th class="border-top-0">Last Name</th>
+                                    <th class="border-top-0">Username</th>
+                                    <th class="border-top-0">Email</th>
+                                    <th class="border-top-0">Phone Number</th>
+                                    <th class="border-top-0">Date Joined</th>
+                                    <th class="border-top-0">Last Login</th>
+                                    <th colspan="2" class="border-top-0 ">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in user_details %}
+                                <tr>
+                                    <td>{{user.id}}</td>
+                                    <td>{{user.first_name}}</td>
+                                    <td>{{user.last_name}}</td>
+                                    <td>{{user.username}}</td>
+                                    <td>{{user.email}}</td>
+                                    <td>{{user.phone_no}}</td>
+                                    <td>{{user.date_joined}}</td>
+                                    <td>{{user.last_login}}</td>
+                                    {% if user.is_active == True %}
+                                    <td><a class="btn btn-success text-light deactivate_user" data-id = {{user.id}}>Active</a></td>
+
+                                    {% else %}
+                                    <td><a class="btn btn-danger text-light activate_user" data-id = {{user.id}}>Deactive</a></td>
+
+                                    {% endif %}
+
+                                
+
+                                </tr>
+                               {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <nav aria-label="Page navigation example">
+              {% if user_details.has_other_pages %}
+              <ul class="pagination d-flex justify-content-center">
+                  {% if user_details.has_previous %}
+              <li class="page-item">
+                  <a class="page-link" href="?page={{ user_details.previous_page_number}}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+              </li>
+              
+                  {% endif %}
+                {% for i in user_details.paginator.page_range %}
+                  {% if user_details.number == i %}
+                <li class="page-item"><a class="page-link" href="#">{{i}}</a></li>
+                  {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                  {% endif %}
+                {% endfor %}
+                
+                {% if user_details.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ user_details.next_page_number}}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+              </li>
+              {% endif %}
+              </ul>
+              {% endif %}
+            </nav>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End PAge Content -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Right sidebar -->
+        <!-- ============================================================== -->
+        <!-- .right-sidebar -->
+        <!-- ============================================================== -->
+        <!-- End Right sidebar -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Container fluid  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+   
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Page wrapper  -->
+<!-- ============================================================== -->
+{% block Scripts %}
+<script>
+
+    const deactivate_user = [...document.getElementsByClassName('deactivate_user')]
+    
+    deactivate_user.forEach(delete_single_btn=>{
+        delete_single_btn.addEventListener('click',function(){
+            let value = delete_single_btn.dataset.id
+            
+            swal({
+                title: "Are you sure?",
+                text: "Do you want to deactivate this user?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                closeOnConfirm: false,
+              })
+              .then((willDelete) => {
+                if (willDelete) {
+                    
+                  swal("Your user has been deactivated!", {
+                    
+                    icon: "success",
+                   
+                    
+                  });
+                  window.location = `user/deactivate/${value}`
+                }   
+              });
+        })
+    })
+
+
+
+</script>
+
+<script>
+
+    const activate_user = [...document.getElementsByClassName('activate_user')]
+    
+    activate_user.forEach(delete_single_btn=>{
+        delete_single_btn.addEventListener('click',function(){
+            let value = delete_single_btn.dataset.id
+            
+            swal({
+                title: "Are you sure?",
+                text: "Do you want to activate this user?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                closeOnConfirm: false,
+              })
+              .then((willDelete) => {
+                if (willDelete) {
+                    
+                  swal("Your user has been activated!", {
+                    
+                    icon: "success",
+                   
+                    
+                  });
+                  window.location = `user/activate/${value}`
+                }   
+              });
+        })
+    })
+
+
+
+</script>
+
+{% endblock Scripts%}
+
+
+
+{% endblock %}

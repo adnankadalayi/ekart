@@ -1,0 +1,78 @@
+{% extends 'store/base.html'%}
+
+{% block content %}
+        <main class="main">
+        	
+            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'user_orders' %}">Profile</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">My Account</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+            	<div class="dashboard">
+	                <div class="container">
+	                	<div class="row">
+	                		<aside class="col-md-3 col-lg-2">
+	                			<ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link " href="{% url 'user_orders' %}" >Orders</a>
+								    </li>
+									
+								    <li class="nav-item">
+								        <a class="nav-link" href="{% url 'address' %}" >Addresses</a>
+								    </li>
+								    <li class="nav-item">
+										<a class="nav-link " href="{% url 'profile' %}" >Account Details</a>
+								    </li>
+									<li class="nav-item">
+										<a class="nav-link active" href="{% url 'referrals' %}" >Referrals</a>
+								    </li>
+								    <li class="nav-item">
+								        <a class="nav-link" href="{% url 'logoutPage' %}">Sign Out</a>
+								    </li>
+								</ul>
+	                		</aside><!-- End .col-lg-3 -->
+
+	                		<div class="col-md-8 col-lg-9">
+	                			<div class="tab-content">
+									
+										<!-- <div class="tab-pane fade show active" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
+											<p>No order has been made yet.</p>
+											<a href="{% url 'store' %}" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+										</div>	.End .tab-pane -->
+
+
+									<!-- <div class="d-flex ">	<h5 >Manage Address </h5>   <b><a style="margin-left : 100px" href="">Add Address </a></b>  </div>
+
+									<b>Address : </b>{{user_details.address_line_1}} ,{{user_details.address_line_2}}
+									<p><b>Country : </b>{{user_details.country}}</p>
+									<p><b>State : </b>{{user_details.state}}</p>
+									<p><b>City : </b>{{user_details.city}}</p>	
+									<p><b>PIN : </b>{{user_details.pin}}</p>	 -->
+
+									<h5>Your Referrals : </h5>
+									{% if my_recommends %}
+									<ul>
+										{% for p  in my_recommends %}
+										<li style="margin-left: 65px;"><b>--></b> {{p.user.first_name}}</li>
+										{% endfor %}
+									</ul>
+									{% else %}
+									<h6 class="text-danger text-center">You don't have any Recommadations</h6>
+									{% endif %}
+
+									<h5 class="d-inline">Your Referral Link : &nbsp;&nbsp;	</h5> <a href="www.{{ request.get_host }}.com/{{ your_code }}"><b>  Referal Link</b></a>
+									
+								</div>
+	                		</div><!-- End .col-lg-9 -->
+	                	</div><!-- End .row -->
+	                </div><!-- End .container -->
+                </div><!-- End .dashboard -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+{% endblock %}

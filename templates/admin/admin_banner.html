@@ -1,0 +1,164 @@
+{% extends 'admin/admin_base.html' %}  
+{% load static %}
+
+{% block content %}
+
+<div class="page-wrapper">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <div class="d-flex justify-content-between">
+                        <h3 class="box-title">Banners</h3>
+                        <a href="{% url 'add_banner' %}">
+                                <h4><b>+ Add Banner</h4></b>
+                            </a>
+                        </div>
+
+                        {% if not banners %}
+                        <img class="rounded mx-auto d-block mb-4"  src=" {% static 'assets/images/error-no-search-results_2353c5.png' %}" alt="">
+                        <h1 class="text-center">No Banner Available</h1>
+                        {% else %}
+                        
+                    <div class="table-responsive">
+                        <table class="table text-wrap">
+                            <thead>
+                                <tr>
+                                    <th class="border-top-0">#</th>
+                                    <th class="border-top-0">Subtitle</th>
+                                    <th class="border-top-0">Title</th>
+                                    <th class="border-top-0">Price</th>
+                                    <th class="border-top-0">Image</th>
+                                    <th colspan="2" class="border-top-0 ">Actions</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for banner in page_details %}
+                        <tr>
+                            <td>{{banner.id}}</td>
+                            <td>{{banner.subtitle}}</td>
+                            <td>{{banner.title}}</td>
+                            <td>{{banner.price}}</td>
+                            <td>
+                                <img src="{{banner.image.url}}" alt="" style="max-width: 50%;">
+                            </td>
+                            <td><a class="btn btn-warning" href="banner/edit/{{banner.id}}">Edit</a></td>
+                                    <td><a class="btn btn-danger text-light delete_btn"
+                                            data-id={{banner.id}}>Delete</a></td>
+                                </tr>
+                            
+                        
+
+                        </tr>
+                       {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <nav aria-label="Page navigation example">
+                {% if page_details.has_other_pages %}
+                <ul class="pagination d-flex justify-content-center">
+                    {% if page_details.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_details.previous_page_number}}" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                
+                    {% endif %}
+                  {% for i in page_details.paginator.page_range %}
+                    {% if page_details.number == i %}
+                  <li class="page-item"><a class="page-link" href="#">{{i}}</a></li>
+                    {% else %}
+                  <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  
+                  {% if page_details.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_details.next_page_number}}" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+                </ul>
+                {% endif %}
+              </nav>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End PAge Content -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Right sidebar -->
+        <!-- ============================================================== -->
+        <!-- .right-sidebar -->
+        <!-- ============================================================== -->
+        <!-- End Right sidebar -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Container fluid  -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Page wrapper  -->
+<!-- ============================================================== -->
+{% block Scripts %}
+<script>
+
+    const delete_element = [...document.getElementsByClassName('delete_btn')]
+
+    delete_element.forEach(delete_single_btn => {
+        delete_single_btn.addEventListener('click', function () {
+            let value = delete_single_btn.dataset.id
+
+            swal({
+                title: "Are you sure?",
+                text: "Do you want to delete this banner?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                closeOnConfirm: false,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        swal("Your banner has been deleted!", {
+
+                            icon: "success",
+
+
+                        }); 
+                        window.location = `banner/delete/${value}`
+                    }
+                });
+        })
+    })
+
+
+
+</script>
+
+{% endblock Scripts%}
+
+
+
+{% endblock %}

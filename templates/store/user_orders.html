@@ -1,0 +1,160 @@
+{% extends 'store/base.html'%}
+
+{% block content %}
+        <main class="main">
+        	
+            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'user_orders' %}">Orders</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">My Account</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+            	<div class="dashboard">
+	                <div class="container">
+	                	<div class="row">
+	                		<aside class="col-md-3 col-lg-2">
+	                			<ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link active" href="{% url 'user_orders' %}" >Orders</a>
+								    </li>
+									
+									<li class="nav-item">
+								        <a class="nav-link" href="{% url 'address' %}" >Addresses</a>
+								    </li>
+								    <li class="nav-item">
+										<a class="nav-link " href="{% url 'profile' %}" >Account Details</a>
+								    </li>
+									<li class="nav-item">
+										<a class="nav-link " href="{% url 'referrals' %}" >Referrals</a>
+								    </li>
+								    <li class="nav-item">
+								        <a class="nav-link" href="{% url 'logoutPage' %}">Sign Out</a>
+								    </li>
+								</ul>
+	                		</aside><!-- End .col-lg-3 -->
+
+	                		<div class="col-md-8 col-lg-9">
+	                			<div class="tab-content">
+
+									{% if not orders  %}
+									
+									
+									<div class="tab-pane fade show active" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
+										<p>No order has been made yet.</p>
+								    	<a href="{% url 'store' %}" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+								    </div>
+									
+									{% else %}
+
+									<div class="container">
+										<div class="row">
+											<div class="col-lg-10">
+												<table class="table table-cart table-mobile">
+													<thead>
+														<tr>
+															<th class="text-dark">Product Image</th>
+															<th class="text-dark">Product</th>
+															<th class="text-dark">Price</th>
+															<th class="text-dark">Order Date</th>
+															<th class="text-dark">Status</th>
+															<th class="text-dark">Action</th>
+														</tr>
+													</thead>
+						
+													<tbody>
+														{% for item in orders %}
+														<tr>
+															<th>
+																<a href="{% url 'order_details' item.order.tracking_no %}" class="btn-btn-primary-outline"><img width="60px" src="{{item.product.product_img_0.url}}" alt="Product image"></a>
+															</th>
+															<th>
+																<a href="{% url 'order_details' item.order.tracking_no %}" class="btn-btn-primary-outline">{{item.product}}</th></a>
+															<th>{{item.product_price}}</th>
+															<th>{{item.created_at}}</th>
+															<th>{{item.order.status}}</th>
+															
+															{% if item.order.status == 'Ordered' %}
+																<th>
+																	<a data-id="{{item.order.order_number}}" class="delete_btn text-danger">Cancel</a>
+																</th>
+															{% elif item.order.status == 'Delivered' %}
+																<th>
+																	<a href="{% url 'return_order' item.order.order_number %}" class="text-danger">Return</a>
+																</th>
+															{% elif item.order.status == 'Shipped' %}
+															<th>
+																<a data-id="{{item.order.order_number}}" class="delete_btn text-danger">Cancel</a>
+															</th>	
+															{% elif item.order.status == 'Out for Delivery' %}
+															<th>
+																<a data-id="{{item.order.order_number}}" class="delete_btn text-danger"  >Cancel</a>
+															</th>
+														
+															{% endif %}
+															
+														</tr>
+												   
+													   {% endfor %}
+													</tbody>
+												</table><!-- End .table table-wishlist -->
+											</div>
+										</div>
+									</div>
+									
+									{% endif %}
+									
+									
+								    </div><!-- .End .tab-pane -->
+								</div>
+	                		</div><!-- End .col-lg-9 -->
+	                	</div><!-- End .row -->
+	                </div><!-- End .container -->
+                </div><!-- End .dashboard -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+
+		{% block Scripts %}
+		<script>
+
+			const delete_element = [...document.getElementsByClassName('delete_btn')]
+			
+			delete_element.forEach(delete_single_btn=>{
+				delete_single_btn.addEventListener('click',function(){
+					let value = delete_single_btn.dataset.id
+					
+					swal({
+						title: "Are you sure?",
+						text: "Do you want to cancel this order?",
+						icon: "warning",
+						buttons: true,
+						dangerMode: true,
+					  })
+					  .then((willDelete) => {
+						if (willDelete) {
+							
+						  swal("Your order has been cancelled!", {
+							icon: "success",
+							
+						  });
+						  window.location = `cancel_order/${value}`
+						}   
+					  });
+				})
+			})
+		
+		
+		
+		</script>
+
+
+
+{% endblock Scripts%}
+
+
+
+{% endblock %}

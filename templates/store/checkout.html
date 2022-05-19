@@ -1,0 +1,375 @@
+{% extends 'store/base.html'%}
+{% load mathfilters %}
+{% load static %}
+
+{% block content %}
+
+<main class="main ">
+
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <div class="page-content">
+        <div class="checkout">
+            <div class="container">
+                <!-- <div class="checkout-discount">
+                    <form action="#">
+                        <input type="text" class="form-control"  id="checkout-discount-input">
+                        <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label>
+                    </form>
+                </div>End .checkout-discount -->
+                <!-- <form novalidate class="needs-validation" action="{% url 'place_order' %}" method="post"> -->
+                    <!-- {% csrf_token %} -->
+                    <div class="row">
+                        <div class="col-lg-9">
+                                <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+                                
+                                
+                            
+                            <!-- <div class="row"> -->
+                                <!-- <div class="col-sm-6">
+                                    <label>First Name *</label>
+                                    <input type="text" value="{{request.user.first_name}}" name="first_name"
+                                        class="form-control">
+                                    <div class="invalid-feedback">
+                                        This field is required
+                                    </div>
+                                </div><!-- End .col-sm-6 --
+
+                                <div class="col-sm-6">
+                                    <label>Last Name *</label>
+                                    <input type="text" value="{{request.user.last_name}}" name="last_name"
+                                        class="form-control">
+                                </div><!-- End .col-sm-6 --
+                            </div><!-- End .row --
+
+
+
+                            <label>Street address *</label>
+                            <input type="text" value="{{userprofile.address_line_1}}" class="form-control"
+                                name="address_line_1" placeholder="House number and Street name">
+                            <div class="invalid-feedback">
+                                This field is required
+                            </div>
+                            <input type="text" value="{{userprofile.address_line_2}}" class="form-control"
+                                name="address_line_2" placeholder="Appartments, suite, unit etc ...">
+
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>City *</label>
+                                    <input type="text" value="{{userprofile.city}}" name="city" class="form-control">
+                                    <div class="invalid-feedback">
+                                        This field is required
+                                    </div>
+                                </div><!-- End .col-sm-6 --
+
+                                <div class="col-sm-6">
+                                    <label>State *</label>
+                                    <input type="text" value="{{userprofile.state}}" name="state" class="form-control">
+                                </div><!-- End .col-sm-6 --
+                            </div><!-- End .row --
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label>Country *</label>
+                                    <input type="text" value="{{userprofile.country}}" name="country"
+                                        class="form-control">
+                                </div><!-- End .col-sm-6 --
+
+                                <div class="col-sm-4">
+                                    <label>Phone *</label>
+                                    <input type="tel" value="{{request.user.phone_no}}" name="phone_number"
+                                        class="form-control">
+                                </div><!-- End .col-sm-6 --
+
+                                <div class="col-sm-4">
+                                    <label>PIN </label>
+                                    <input type="number" value="{{userprofile.pin}}" name="pin" class="form-control">
+                                </div><!-- End .col-sm-6 --
+                            </div><!-- End .row --
+
+                            <label>Email address *</label>
+                            <input type="email" value="{{request.user.email}}" name="email" class="form-control">-->
+                            <form novalidate class="needs-validation" action="{% url 'place_order' %}" method="post">
+                                {% csrf_token %}
+
+                            <label>Order notes (optional)</label>
+                            <textarea class="form-control" name="order_note" cols="1" rows="1"
+                                placeholder="Notes about your order, e.g. special notes for delivery"></textarea> 
+
+                                <h6><a class="float-right" href="{% url 'add_address' %}">Add Address</h6></a>
+
+                                {% if address %}
+                                {% for address in address %}
+                                <!-- <form novalidate class="needs-validation" action="{% url 'activate_address' %}"> -->
+                                <div class="form-check">
+                                    <!-- <input class="form-check-input activate-address address{{address.id}}" data-address="{{address.id}}" type="radio" name="flexRadioDefault" id="flexRadioDefault1"> -->
+                                    <input class="form-check-input"  type="radio" name="ship_address" value="{{address.id}}">
+                                    <label >
+                                        <b> Address {{forloop.counter}}</b>
+                                    </label>
+                                  
+								    		<div class="col-lg-6">
+								    			<div class="card card-dashboard">
+								    				<div class="card-body">
+								    					
+                                                        
+														{{address.first_name}},
+														{{address.last_name}},
+														{{address.address_line_1}} ,{{address.address_line_2}},
+														{{address.city}},
+														{{address.state}}, {{address.country}},
+														{{address.pin}},
+														{{address.phone_no }},
+														{{address.email}},
+														<!-- <a href="#">Edit <i class="icon-edit"></i></a></p> -->
+								    				</div><!-- End .card-body -->
+								    			</div><!-- End .card-dashboard -->
+								    		</div><!-- End .col-lg-6 -->
+                                </div>
+                                 	{% endfor %}
+                                     <!-- <input type="submit" class="btn btn-primary btn-outline " > -->
+                                {% else %}
+                                <h5>No Address Available</h5>
+                                {% endif %}
+                                   
+                                  
+
+                        </div><!-- End .col-lg-9 -->
+                        <aside class="col-lg-3">
+                            <div class="summary">
+                                <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
+
+
+                                <table class="table table-summary">
+                                    <thead>
+                                        <tr>
+                                            <th>Products</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for cart_item in cart_items %}
+                                            {% if coupon %}
+                                                <tr>
+                                                    <td><a href="#">{{ cart_item.product.product_name}}</a></td>
+                                                    <td>{% if cart_item.product.prod_offers.discount %}
+                                                        ₹{{cart_item.product.prod_offers.discount|mul:cart_item.product.price|intdiv:100|sub:cart_item.product.price|abs}}
+                                                        {% elif cart_item.product.category.cate_offers.discount %}
+                                                        ₹{{cart_item.product.category.cate_offers.discount|mul:cart_item.product.price|intdiv:100|sub:cart_item.product.price|abs}}
+                                                        {% else %}
+                                                        ₹{{cart_item.product.price}}
+                                                        {% endif %}</td>
+                                                        
+                                                </tr>
+                                                <p class="text-danger">Coupon Applied = ₹{{coupon.discount }} off</p>
+
+                                            {% else %}
+                                                <tr>
+                                                    <td><a href="#">{{ cart_item.product.product_name}}</a></td>
+                                                    <td>{% if cart_item.product.prod_offers.discount %}
+                                                        ₹{{cart_item.product.prod_offers.discount|mul:cart_item.product.price|intdiv:100|sub:cart_item.product.price|abs}}
+                                                        {% elif cart_item.product.category.cate_offers.discount %}
+                                                        ₹{{cart_item.product.category.cate_offers.discount|mul:cart_item.product.price|intdiv:100|sub:cart_item.product.price|abs}}
+                                                        {% else %}
+                                                        ₹{{cart_item.product.price}}
+                                                        {% endif %}</td>
+
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        <!-- <tr>
+                                            <td><a href="#">{{ cart_item.product.product_name}}</a></td>
+                                            <td>₹{{cart_item.product.price}}</td>
+                                        </tr> -->
+
+                                        {% if coupon %}
+                                        
+                                        <tr class="summary-shipping">
+                                            <td>Shipping:</td>
+                                            <td>₹{{shipping}}</td>
+                                        </tr>
+                                       
+                                        <tr class="summary-shipping">
+                                            <td>Tax:</td>
+                                            <td>₹{{new_tax}}</td>
+                                        </tr>
+
+                                        <tr class="summary-total">
+                                            <td>Total:</td>
+                                            <td>₹{{new_total}}</td>
+                                        </tr><!-- End .summary-total -->
+
+
+                                        {% else %}
+                                        
+                                        <tr class="summary-shipping">
+                                            <td>Shipping:</td>
+                                            <td>₹{{shipping}}</td>
+                                        </tr>
+
+                                        <tr class="summary-shipping">
+                                            <td>Tax:</td>
+                                            <td>₹{{tax}}</td>
+                                        </tr>
+                                        
+                                        <tr class="summary-total">
+                                            <td>Total:</td>
+                                            <td>₹{{grand_total}}</td>
+                                        </tr><!-- End .summary-total -->
+
+                                        {% endif %}
+
+                                    </tbody>
+                                </table><!-- End .table table-summary -->
+
+                                <input type="submit" value="Cash on Delivery"
+                                class="btn btn-outline-primary-2 btn-order btn-block">
+                                <button id="rzp-button1"
+                                class="btn btn-outline-success btn-order btn-block mt-1">Razorpay</button>
+                                <div  id="paypal-button-container" class="mt-1"></div>
+                            </form>
+
+            </div><!-- End .summary -->
+            </aside><!-- End .col-lg-3 -->
+        </div><!-- End .row -->
+
+    </div><!-- End .container -->
+    </div><!-- End .checkout -->
+    </div><!-- End .page-content -->
+</main><!-- End .main -->
+
+
+{% endblock %}
+
+{% block scripts %}
+<form action="{% url 'order_status' %}" method="post">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        var options = {
+            "key": "rzp_test_hEUUNfBlbyKiTo",
+            "amount": "{{razor}}", 
+            "currency": "INR",
+            "name": "ekart",
+            "description": "Test Transaction",
+            "image": "{% static 'assets/images/ekart-logo.png' %}",
+            "order_id": "{{razorpay_order_id}}",
+            "callback_url": "paymenthandler/",
+            "prefill": {
+                "name": "{{request.user.username}}",
+                "email": "{{request.user.email}}",
+                "contact": "{{request.user.phone_no}}",
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        document.getElementById('rzp-button1').onclick = function (e) {
+            rzp1.open();
+            e.preventDefault();
+        }
+    </script>
+</form>
+<script
+    src="https://www.paypal.com/sdk/js?client-id=Acz4fJkwiHW-UCl9oNulpjPKFQsGfd86C9H3Q2G7Kf1gbFAWFZSAMDRfdIvOc-iey2QnxfjA2yKV2q-C&currency=USD"></script>
+
+<script>
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    var total = "{{ grand_total }}"
+    var url = "{% url 'paypal_payments' %}"
+    var csrftoken = getCookie('csrftoken');
+    var orderID = "{{order.order_number}}"
+    var payment_method = 'PayPal'
+    var redirect_url = "{% url 'order_success' %}"
+    // Render the PayPal button into #paypal-button-container
+    paypal.Buttons({
+
+        // Set up the transaction
+        createOrder: function (data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: parseFloat(total).toFixed(2)
+                    }
+                }]
+            });
+        },
+
+        // Finalize the transaction
+        onApprove: function (data, actions) {
+            return actions.order.capture().then(function (details) {
+                // Successful capture! For demo purposes:
+                // console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                // var transaction = orderData.purchase_units[0].payments.captures[0];
+                // alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+                console.log(details);
+                sendData();
+                function sendData() {
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrftoken,
+                        },
+                        body: JSON.stringify({
+                            orderID: orderID,
+                            transID: details.id,
+                            payment_method: payment_method,
+                            status: details.status,
+                            total:total,
+
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Transaction completed successfully');
+                        window.location.href = redirect_url + '?order_number='+data.order_number+'&payment_id='+data.transID
+                    });
+                }
+
+                // Replace the above to show a success message within this page, e.g.
+                // const element = document.getElementById('paypal-button-container');
+                // element.innerHTML = '';
+                // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                // Or go to another URL:  actions.redirect('thank_you.html');
+            });
+        }
+
+
+    }).render('#paypal-button-container');
+</script>
+
+
+
+
+{% endblock scripts %}

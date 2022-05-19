@@ -1,0 +1,145 @@
+{% extends 'admin/admin_base.html' %}  
+{% load static %}
+
+
+{% block content %}
+
+<div class="page-wrapper">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <h3 class="box-title">Orders</h3>
+
+                    {% if not orders %}
+                    <img class="rounded mx-auto d-block mb-4"  src=" {% static 'assets/images/error-no-search-results_2353c5.png' %}" alt="">
+                    <h1 class="text-center">No Orders Available</h1>
+                    {% else %}
+
+                    <div class="table-responsive">
+                        <table class="table text-wrap table-cart table-mobile">
+                            <thead>
+                                <tr>
+                                    <th class="text-dark">User</th>
+                                    <th class="text-dark">Product Image</th>
+                                    <th class="text-dark">Product</th>
+                                    <th class="text-dark">Price</th>
+                                    <!-- <th class="text-dark">Payment Method</th> -->
+                                    <th class="text-dark">Order Date</th>
+                                    <th class="text-dark">Order Number</th>
+                                    <th class="text-dark">Status</th>
+                                    <th class="text-dark">Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for item in orders %}
+                                <tr>
+                                    <th>{{item.user}}</th>
+
+                                    <th>
+                                       <img width="60px" src="{{item.product.product_img_0.url}}" alt="Product image"></a>
+                                    </th>
+                                    <th>
+                                       {{item.product}}</th></a>
+                                    <th>{{item.product_price}}</th>
+                                    <!-- <th>{{item.payment.payment_method}}</th> -->
+                                    <th>{{item.created_at}}</th>
+                                    <th>{{item.order.order_number}}</th>
+                                    <th>{{item.order.status}}</th>
+									    <th>
+                        {% if item.order.status == 'Cancelled' or item.order.status == 'Returned' %}
+                        Can't Change
+                        {% else %}
+										    <div class="dropdown">
+                          <button class="btn btn-info text-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Order Status
+                          </button>
+                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item " href="{% url 'order_order' item.order.order_number %}">Ordered</a></li>
+                            <li><a class="dropdown-item " href="{% url 'ship_order' item.order.order_number %}">Shipped</a></li>
+                            <li><a class="dropdown-item " href="{% url 'deliver_order' item.order.order_number %}">Delivered</a></li>
+                            <li><a class="dropdown-item " href="{% url 'cancel_order_admin' item.order.order_number %}">Cancelled</a></li>
+                            <li><a class="dropdown-item " href="{% url 'return_order_admin' item.order.order_number%}">Returned</a></li>
+                          </ul>
+                        </div>
+                        {% endif %}
+									    </th>
+                                  
+                                </tr>
+                           
+                               {% endfor %}
+                            </tbody>
+                        </table><!-- End .table table-wishlist -->
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <nav aria-label="Page navigation example">
+              {% if orders.has_other_pages %}
+              <ul class="pagination d-flex justify-content-center">
+                  {% if orders.has_previous %}
+              <li class="page-item">
+                  <a class="page-link" href="?page={{ orders.previous_page_number}}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+              </li>
+              
+                  {% endif %}
+                {% for i in orders.paginator.page_range %}
+                  {% if orders.number == i %}
+                <li class="page-item"><a class="page-link" href="#">{{i}}</a></li>
+                  {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                  {% endif %}
+                {% endfor %}
+                
+                {% if orders.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ orders.next_page_number}}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+              </li>
+              {% endif %}
+              </ul>
+              {% endif %}
+            </nav>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End PAge Content -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Right sidebar -->
+        <!-- ============================================================== -->
+        <!-- .right-sidebar -->
+        <!-- ============================================================== -->
+        <!-- End Right sidebar -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Container fluid  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+   
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Page wrapper  -->
+<!-- ============================================================== -->
+
+
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'store/base.html'%}
+
+{% block content %}
+        <main class="main">
+        	
+            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'user_orders' %}">Profile</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">My Account</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+            	<div class="dashboard">
+	                <div class="container">
+	                	<div class="row">
+	                		<aside class="col-md-3 col-lg-2">
+	                			<ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link " href="{% url 'user_orders' %}" >Orders</a>
+								    </li>
+									
+								    <li class="nav-item">
+								        <a class="nav-link active" href="{% url 'address' %}" >Addresses</a>
+								    </li>
+								    <li class="nav-item">
+										<a class="nav-link" href="{% url 'profile' %}" >Account Details</a>
+								    </li>
+									<li class="nav-item">
+										<a class="nav-link " href="{% url 'referrals' %}" >Referrals</a>
+								    </li>
+								    <li class="nav-item">
+								        <a class="nav-link" href="{% url 'logoutPage' %}">Sign Out</a>
+								    </li>
+								</ul>
+	                		</aside><!-- End .col-lg-3 -->
+
+	                		<div class="col-md-8 col-lg-9">
+	                			<div class="tab-content">
+									
+								<form novalidate  action="{% url 'add_address' %}" method="post">
+									{% csrf_token %}
+
+									<div  class="form-group">
+										{{ form }}
+										
+									
+									</div><!-- End .form-group -->
+                                   
+									
+										<button type="submit" class="btn btn-outline-primary mt-1  ">Add</button>
+								
+								</form>	
+									<!-- <div class="tab-pane fade " id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
+										<p>Hello <span class="font-weight-normal text-dark">User</span> (not <span class="font-weight-normal text-dark">User</span>? <a href="#">Log out</a>) 
+										<br>
+										From your account dashboard you can view your <a href="#tab-orders" class="tab-trigger-link link-underline">recent orders</a>, manage your <a href="#tab-address" class="tab-trigger-link">shipping and billing addresses</a>, and <a href="#tab-account" class="tab-trigger-link">edit your password and account details</a>.</p>
+									</div>.End .tab-pane -->
+
+								    
+								    </div><!-- .End .tab-pane -->
+								</div>
+	                		</div><!-- End .col-lg-9 -->
+	                	</div><!-- End .row -->
+	                </div><!-- End .container -->
+                </div><!-- End .dashboard -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+{% endblock %}
