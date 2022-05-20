@@ -90,10 +90,10 @@ AUTH_USER_MODEL = 'accounts.Accounts'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ekart',
+        'NAME': 'ekart_db',
         'USER' : 'postgres',
-        'PASSWORD' : '1234',
-        'HOST' : 'localhost',
+        'PASSWORD' : 'adnankadalayi',
+        'HOST' : 'database-1.cuuxloehcpkn.us-west-2.rds.amazonaws.com',
         'PORT' : '5432'
     }
 }
