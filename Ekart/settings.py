@@ -138,6 +138,7 @@ STATICFILES_FINDERS = [
 
 ]
 STATIC_URL = 'static/'
+STATIC_URL = 'static/admin/'
 STATICFILES_DIRS = [
     os.path.join('static')
 ]   
