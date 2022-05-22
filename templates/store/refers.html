@@ -66,8 +66,24 @@
 									<h6 class="text-danger text-center">You don't have any Recommadations</h6>
 									{% endif %}
 
-									<h5 class="d-inline">Your Referral Link : &nbsp;&nbsp;	</h5> <a href="/{{ your_code }}"><b>  Referal Link</b></a>
-									
+									<!-- <h5 class="d-inline">Your Referral Link : &nbsp;&nbsp;	</h5> <a href="/{{ your_code }}"><b>  Referal Link</b></a> -->
+									<div class="input-group input-group-sm mb-3">
+										<span class="input-group-text" id="inputGroup-sizing-sm">Small</span>
+										<input value="{{request.get_host }}/{{ your_code }}" id="myInput" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+									</div>
+
+									<div class="tooltip">
+									<button onclick="myFunction()" onmouseout="outFunc()"
+											type="button" class="btn btn-secondary"
+											data-bs-toggle="tooltip" data-bs-placement="top"
+											data-bs-custom-class="custom-tooltip"
+											title="This top tooltip is themed via CSS variables.">
+									<span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+									Copy text
+									</button>
+									</div>
+
+
 								</div>
 	                		</div><!-- End .col-lg-9 -->
 	                	</div><!-- End .row -->
@@ -75,4 +91,22 @@
                 </div><!-- End .dashboard -->
             </div><!-- End .page-content -->
         </main><!-- End .main -->
+{% block scripts %}
+<script>
+	function myFunction() {
+	  var copyText = document.getElementById("myInput");
+	  copyText.select();
+	  copyText.setSelectionRange(0, 99999);
+	  navigator.clipboard.writeText(copyText.value);
+	  
+	  var tooltip = document.getElementById("myTooltip");
+	  tooltip.innerHTML = "Copied: " + copyText.value;
+	}
+	
+	function outFunc() {
+	  var tooltip = document.getElementById("myTooltip");
+	  tooltip.innerHTML = "Copy to clipboard";
+	}
+	</script>
+{% enblock scripts %}
 {% endblock %}
