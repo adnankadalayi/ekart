@@ -334,27 +334,27 @@ def paymenthandler(request):
         order_items = CartItem.objects.filter(user=request.user)
         
         
-        for item in order_items :
-            OrderProduct.objects.create(
-                order=order,
-                user = request.user,
-                product= item.product,  
-                product_price= item.product.price,  
-                quantity= item.quantity,
-            )
-            # to decrease the product for available stock
-            order_product = Product.objects.filter(id= item.product_id).first()
-            order_product.stock = order_product.stock - item.quantity
-            order_product.save()
-            order.is_ordered = True
-            order.save()
+        # for item in order_items :
+        #     OrderProduct.objects.create(
+        #         order=order,
+        #         user = request.user,
+        #         product= item.product,  
+        #         product_price= item.product.price,  
+        #         quantity= item.quantity,
+        #     )
+        #     # to decrease the product for available stock
+        #     order_product = Product.objects.filter(id= item.product_id).first()
+        #     order_product.stock = order_product.stock - item.quantity
+        #     order_product.save()
+        #     order.is_ordered = True
+        #     order.save()
         #     #  clear the cart after order placed
         CartItem.objects.filter(user= request.user).delete()
 
     context = {
         'order' : order,
     }
-    return render(request,'store/order_status.html',context)
+    return render(request,'store/razor_success.html',context)
 
 def coupon_apply(request):
     now = timezone.now()
