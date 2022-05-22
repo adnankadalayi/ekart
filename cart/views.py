@@ -353,6 +353,7 @@ def paymenthandler(request):
 
     context = {
         'order' : order,
+        
     }
     return render(request,'store/razor_success.html',context)
 
