@@ -64,12 +64,14 @@
 
                                             <div class="col-lg-5">
                                                 <h4>More Details</h4>
-                                                <p><b> Tracking Number : </b>{{order.tracking_no}}</p><br>
+                                                <p><b>Order Number : </b>{{order.order_number}}</p><br>
                                                 <p><b>Order Status : </b>{{order.status}}</p><br>
                                                 <p><b>Payment Method : </b>{{order.payment.payment_method}}</p><br>
-                                                <p><b>Quantity : </b>{{order_items.quantity}}</p><br>
                                                 
+												{% if order.order_note %}
                                                 <p><b>Order Note : </b>{{order.order_note}}</p>
+												{% else %}
+												{% endif %}
                                             
 												
                                                 

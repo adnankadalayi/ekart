@@ -22,11 +22,19 @@ from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
 from cart.models import Coupon
 
+
 def dashboard(request):
-    users       = Accounts.objects.all().count()
+    users = Accounts.objects.all().count()
+    users_date  = Accounts.objects.annotate(day=ExtractDay('date_joined')).values('day').annotate(total=Count('id'))
     orders      = OrderProduct.objects.annotate(day=ExtractDay('created_at')).values('day').annotate(total=Count('id'))
     order_count = OrderProduct.objects.all().count()
     products    = Product.objects.all().count()
+    product_details = Product.objects.annotate(day=ExtractDay('created_date')).values('day').annotate(total=Count('id'))
+    ordered_product = OrderProduct.objects.all()
+
+    for i in ordered_product:
+        total = 0 + i.product.price
+    print(total)
 
     orders_count = []
     orders_date = []
@@ -34,6 +42,20 @@ def dashboard(request):
     for i in orders:
         orders_date.append(i['day'])
         orders_count.append(i['total'])
+
+    users_count = []
+    user_date = []
+
+    for i in users_date:
+        user_date.append(i['day'])
+        users_count.append(i['total'])
+    
+    product_count = []
+    product_date = []
+
+    for i in product_details:
+        product_date.append(i['day'])
+        product_count.append(i['total'])
    
     context = {
         'orders_count' : orders_count,
@@ -41,6 +63,10 @@ def dashboard(request):
         'users' : users,
         'order_count' : order_count,
         'products' : products,
+        'users_count' : users_count,
+        'user_date' : user_date,
+        'product_count' : product_count,
+        'product_date' : product_date,
         
     }
     return render(request, 'admin/admin_dashboard.html', context)
@@ -76,7 +102,7 @@ def admin_login(request):
         if user is not None:
             if user.is_admin == True:
                 auth.login(request, user)
-                return redirect('dashboard')
+                return redirect('order')
             else:   
                 messages.info(request,'Invalid Credentials')
                 return redirect('admin_login')

@@ -46,6 +46,7 @@
                                     <th class="border-top-0">Stock</th>
                                     <th class="border-top-0">Modified Date</th>
                                     <th class="border-top-0">Is Available</th>
+                                    <th class="border-top-0">Is Trending</th>
                                     <th colspan="2" class="border-top-0 ">Actions</th>
 
                                 </tr>
@@ -64,6 +65,7 @@
                                     <td>{{product.stock}}</td>
                                     <td>{{product.modified_date}}</td>
                                     <td>{{product.is_available}}</td>
+                                    <td>{{product.is_trending}}</td>
                                     <td><a class="btn btn-warning" href="product/edit/{{product.id}}">Edit</a></td>
                                     <td><a class="btn btn-danger text-light delete_btn"
                                             data-id={{product.id}}>Delete</a></td>

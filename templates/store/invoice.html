@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container mt-1" >
     <center><i class="fas fa-check-circle" style="font-size: 72px;margin-bottom: 20px;color: #28A745;"></i></center>
-    <h2 class="text-center">Payment Successful</h2>
+    <h2 class="text-center"><span class="text-success"> Order Success</span></h2>
 	<br>
     <div class="text-center">
 		<a href="{% url 'pdf_download' %}" target="_blank" class="btn btn-info mb-1">Download Invoice</a>
@@ -30,9 +30,9 @@
                                 <ul class="list-unstyled text-right">
                                     <li><strong>Invoiced To</strong></li>
                                     <li>{{order.user.first_name}}</li>
-                                    <li>{{order.user.address_line_1}}</li>
-                                    <li>{{order.user.state}}</li>
-                                    <li>{{order.user.country}}</li>
+                                    <!-- <li>{{order.address_line_1}}</li>
+                                    <li>{{order.city}},{{order.state}}</li>
+                                    <li>{{order.country}},{{order.pin}}</li> -->
                                     
                                 </ul>
                             </div>
@@ -43,10 +43,10 @@
                             <div class="invoice-details mt25">
                                 <div class="well">
                                     <ul class="list-unstyled mb0">
-                                        <li><strong>Order</strong> #{{order_number}}</li>
-                                        <li><strong>Transaction ID</strong> #{{payment_id}}</li>
-                                        <li><strong>Order Date:</strong>{{order.created_at}}</li>
-                                        <li><strong>Status:</strong> {{payment.status}}</li>
+                                        <li><strong>Order : </strong>{{order_number}}</li>
+                                        <li><strong>Transaction ID : </strong>{{payment_id}}</li>
+                                        <li><strong>Order Date : </strong>{{order.created_at}}</li>
+                                        <li><strong>Status : </strong>Order Success</li>
                                     </ul>
                                 </div>
                             </div>
@@ -70,6 +70,24 @@
                                             </tr>
                                             {% endfor %}
                                         </tbody>
+                                        {% if coupon %}
+                                        <tfoot>
+                                            <tr>
+                                                <th colspan="2" class="text-right">Sub Total:</th>
+                                                <th class="text-center">₹{{subtotal}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="2" class="text-right">Tax:</th>
+                                                <th class="text-center">₹{{tax}}</th>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <th colspan="2" class="text-right">Grand Total:</th>
+                                                <th class="text-center">₹{{total}}</th>
+                                            </tr>
+                                            <span class="text-success">Coupon Applied</span>
+                                        </tfoot>
+                                        {% else %}
                                         <tfoot>
                                             <tr>
                                                 <th colspan="2" class="text-right">Sub Total:</th>
@@ -85,6 +103,7 @@
                                                 <th class="text-center">₹{{total}}</th>
                                             </tr>
                                         </tfoot>
+                                        {% endif %}
                                     </table>
                                 </div>
                             </div>

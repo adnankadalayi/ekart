@@ -23,7 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('superuser/', include('admin_panel.urls')),
     path('',views.home, name='home'),
-    path(' <str:ref_code>/',views.home, name='home'),
+    path(' /<str:ref_code>/',views.home, name='home'),
     path('store/', include('store.urls')),
     path('accounts/', include('accounts.urls')),
     path('cart/', include('cart.urls')),

@@ -1,7 +1,6 @@
 {% extends 'admin/admin_base.html' %}  
 {% load static %}
 
-
 {% block content %}
 
 <!-- Page wrapper  -->
@@ -61,17 +60,17 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-3">
+                         <!--<div class="col-lg-2 col-md-3">
                         <div class="white-box analytics-info">
-                            <h3 class="box-title">Cancelled Products</h3>
+                            <h3 class="box-title">No.of Users Visit</h3>
                             <ul class="list-inline two-part d-flex align-items-center mb-0">
 
-                                <li class="ms-auto"><span class="counter text-info">{{ products }}</span>
+                                <li class="ms-auto"><span class="counter text-info">{{0}}</span>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-3">
+                <div class="col-lg-2 col-md-3">
                         <div class="white-box analytics-info">
                             <h3 class="box-title">Total Products</h3>
                             <ul class="list-inline two-part d-flex align-items-center mb-0">
@@ -90,7 +89,7 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <!-- ============================================================== -->
                 <!-- PRODUCTS YEARLY SALES -->
@@ -143,9 +142,18 @@
                 <div class="container">
                     <div class="row my-5">
                         <div class="col-md-6">
-                            <div class="bg-white">
-                            <canvas id="myChart" width="400" height="300"></canvas>
-                            
+                            <div class="bg-white mt-5">
+                            <canvas id="myChart" width="400" height="300"></canvas>                            
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-white mt-5">
+                            <canvas id="myChart1" width="400" height="200"></canvas>                            
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-white mt-5">
+                            <canvas id="myChart2" width="400" height="300"></canvas>                            
                             </div>
                         </div>
                         
@@ -153,55 +161,123 @@
                 </div>
                   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                   <script>
-                  // setup 
-                  const data = {
-                    labels:  {{ orders_date|safe }},
-                    datasets: [{
-                      label: 'Sales in Each Day',
-                      data: {{ orders_count }},
-                      backgroundColor: [
-                        'rgba(255, 26, 104, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(0, 0, 0, 0.2)'
-                      ],
-                      borderColor: [
-                        'rgba(255, 26, 104, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(0, 0, 0, 1)'
-                      ],
-                      borderWidth: 1
-                    }]
-                  };
-              
-                  // config 
-                  const config = {
-                    type: 'bar',
-                    data,
-                    options: {
-                        scales: {
-                          y: {
-                            ticks: {
-                              stepSize: 1,
-                              beginAtZero: true,
-                            },
-                          },
+                  const ctx = document.getElementById('myChart').getContext('2d');
+                    const myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels:  {{ orders_date }},
+                            datasets: [{
+                                label: 'Sales in Each Day',
+                                data: {{ orders_count }},
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.7)',
+                                    'rgba(54, 162, 235, 0.7)',
+                                    'rgba(255, 206, 86, 0.7)',
+                                    'rgba(75, 192, 192, 0.7)',
+                                    'rgba(153, 102, 255, 0.7)',
+                                    'rgba(255, 159, 64, 0.7)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
                         },
-                      }
-                  };
-              
-                  // render init block
-                  const myChart = new Chart(
-                    document.getElementById('myChart'),
-                    config
-                  );
+                        options: {
+                            scales: {
+                              y: {
+                                ticks: {
+                                  stepSize: 1,
+                                  beginAtZero: true,
+                                },
+                              },
+                            },
+                          }
+                    });
+                    // ------------DOUGHNUT CHART------------
+                    const ctx1 = document.getElementById('myChart1').getContext('2d');
+                    const myChart1 = new Chart(ctx1, {
+                        type: 'line',
+                        data: {
+                            labels:  {{ user_date|safe }},
+                            datasets: [{
+                                label: 'No. of Users',
+                                data: {{ users_count }},
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.7)',
+                                    'rgba(54, 162, 235, 0.7)',
+                                    'rgba(255, 206, 86, 0.7)',
+                                    'rgba(75, 192, 192, 0.7)',
+                                    'rgba(153, 102, 255, 0.7)',
+                                    'rgba(255, 159, 64, 0.7)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                              y: {
+                                ticks: {
+                                  stepSize: 1,
+                                  beginAtZero: true,
+                                },
+                              },
+                            },
+                          }
+                    }); 
+                        
+                    // ------------LINE CHART------------
+                    const ctx2 = document.getElementById('myChart2').getContext('2d');
+                    const myChart2 = new Chart(ctx2, {
+                        type: 'doughnut',
+                        data: {
+                            labels:  {{ product_date|safe }},
+                            datasets: [{
+                                label: 'Products Added',
+                                data: {{ product_count }},
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.7)',
+                                    'rgba(54, 162, 235, 0.7)',
+                                    'rgba(255, 206, 86, 0.7)',
+                                    'rgba(75, 192, 192, 0.7)',
+                                    'rgba(153, 102, 255, 0.7)',
+                                    'rgba(255, 159, 64, 0.7)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                              y: {
+                                ticks: {
+                                  stepSize: 1,
+                                  beginAtZero: true,
+                                },
+                              },
+                            },
+                          }
+                    }); 
                   </script>
 
                   

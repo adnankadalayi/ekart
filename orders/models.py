@@ -57,10 +57,10 @@ class Order(models.Model):
         return str(self.first_name)              
 
     def full_name(self):                                                       
-        return f'{self.first_name}{self.last_name}'
+        return f'{self.first_name}.{self.last_name}'
 
     def full_address(self):
-        return f'{self.address_line_1}{self.address_line_2}'
+        return f'{self.address_line_1},{self.address_line_2}'
         
 class OrderProduct(models.Model):
     user            = models.ForeignKey(Accounts, on_delete=models.CASCADE)
@@ -68,7 +68,7 @@ class OrderProduct(models.Model):
     order           = models.ForeignKey(Order, on_delete=models.CASCADE)
     product         = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity        = models.IntegerField()
-    # here not null in price
+    # here was not null in price
     product_price   = models.FloatField(null=True)
     ordered         = models.BooleanField(default=False)
     created_at      = models.DateTimeField(auto_now_add=True)

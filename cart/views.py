@@ -21,7 +21,7 @@ from django.utils import timezone
 import datetime
 import random
 from django.conf import settings
-
+from orders.models import Payment
 
 
 def _cart_id(request):# by putting underscore infront of this make it private function
@@ -169,6 +169,7 @@ def cart(request, total=0, quantity=0, cart_items=None):
         new_total = 0
         final_price = 0
         new_tax = 0
+        discount_amount = 0
 
         products = Product.objects.all()
         if request.user.is_authenticated:
@@ -190,9 +191,10 @@ def cart(request, total=0, quantity=0, cart_items=None):
             coupon_id = request.session.get('coupon_id')
             try:
                 coupon = Coupon.objects.get(id=coupon_id)
-                final_price = sub_total-coupon.discount
-                new_tax= (3 * final_price)//100
-                new_total = final_price + new_tax + shipping
+                discount_amount = grand_total*coupon.discount/100
+                final_price = grand_total-(discount_amount)
+                new_tax= (3 * sub_total)//100
+                new_total = final_price 
             except:
                 pass
             
@@ -218,6 +220,7 @@ def cart(request, total=0, quantity=0, cart_items=None):
         'final_price':final_price,
         'new_total': new_total,
         'new_tax': new_tax,
+        'discount_amount': discount_amount,
     }
     return render(request, 'store/cart.html', context)
 
@@ -228,21 +231,17 @@ def checkout(request, total=0, quantity=0, cart_items=None):
     tax = 0
     grand_total = 0
     sub_total = 0
+    discount_amount = 0
     shipping = 50 
     coupon = None
     final_price = None
     new_total = None
     new_tax = None
-    guest_email_id = request.session.get('guest_email_id') 
 
     try:
         
         if request.user.is_authenticated:
             cart_items = CartItem.objects.filter(user=request.user, is_active=True) 
-        elif guest_email_id is not None:
-            guest_email_obj = GuestEmail.objects.get(id=guest_email_id)
-            cart = Cart.objects.get(cart_id=_cart_id(request))
-            cart_items = CartItem.objects.filter(cart=cart, user=guest_email_obj.id) 
         else:
 
             cart = Cart.objects.get(cart_id=_cart_id(request))
@@ -263,9 +262,11 @@ def checkout(request, total=0, quantity=0, cart_items=None):
             coupon_id = request.session.get('coupon_id')
             try:
                 coupon = Coupon.objects.get(id=coupon_id)
-                final_price = sub_total-coupon.discount
-                new_tax= (3 * final_price)//100
-                new_total = final_price + new_tax + shipping
+# --------------------------------------COUPON IN CHECKOUT --------------------------------
+                discount_amount = grand_total*coupon.discount/100
+                final_price = grand_total-(discount_amount)
+                new_tax= (3 * sub_total)//100
+                grand_total = final_price 
             except:
                 pass
         current_user = request.user
@@ -299,7 +300,7 @@ def checkout(request, total=0, quantity=0, cart_items=None):
     razorpay_order_id = razorpay_order['id']
     
     context ={
-        'razor':int(order.order_total)*100,
+        'razor':int(grand_total)*100,
         'total' : sub_total,
         'quantity' : quantity,
         'cart_items' : cart_items,
@@ -309,10 +310,11 @@ def checkout(request, total=0, quantity=0, cart_items=None):
         'address' : address,
         'coupon' : coupon,
         'final_price':final_price,
-        'new_total': new_total,
+        'new_total': grand_total,
         'new_tax': new_tax,
         'order' : order,
         'razorpay_order_id':razorpay_order_id,
+        'discount_amount':discount_amount,
 
     }
 
@@ -320,42 +322,88 @@ def checkout(request, total=0, quantity=0, cart_items=None):
 
 @csrf_exempt
 def paymenthandler(request):
-    
-    # only accept POST request.
+    total = 0    
+    coupon = 0    
+    new_total = 0    
+    grand_total = 0    
+    quantity = 0 
     if request.method == "POST":
         
         payment_id = request.POST.get('razorpay_payment_id', '')
         razorpay_order_id = request.POST.get('razorpay_order_id', '')
         signature = request.POST.get('razorpay_signature', '')
        
-        order_number=razorpay_order_id
         # create a object for this 
-        order = Order.objects.filter(user= request.user, is_ordered=False, order_number=razorpay_order_id)
+        order = Order.objects.get(user= request.user, is_ordered=False)
+        #  store transaction details in payment model
+        payment = Payment(
+        user = request.user,
+        payment_id = payment_id,
+        payment_method = 'RazorPay',
+        amount_paid = order.order_total,
+        status = 'Order Placed',
+
+        )
+        payment.save()
+        order.order_number = razorpay_order_id
+        order.payment = payment
+        order.save()
+
+        order = Order.objects.get(user= request.user, is_ordered=False, order_number=razorpay_order_id)
         order_items = CartItem.objects.filter(user=request.user)
         
         
-        # for item in order_items :
-        #     OrderProduct.objects.create(
-        #         order=order,
-        #         user = request.user,
-        #         product= item.product,  
-        #         product_price= item.product.price,  
-        #         quantity= item.quantity,
-        #     )
-        #     # to decrease the product for available stock
-        #     order_product = Product.objects.filter(id= item.product_id).first()
-        #     order_product.stock = order_product.stock - item.quantity
-        #     order_product.save()
-        #     order.is_ordered = True
-        #     order.save()
-        #     #  clear the cart after order placed
-        CartItem.objects.filter(user= request.user).delete()
+        for item in order_items :
+            OrderProduct.objects.create(
+                order= order,
+                user = request.user,
+                product= item.product,
+                product_price= item.product.price,  
+                quantity= item.quantity,
+            )
+            # to decrease the product for available stock
+            order_product = Product.objects.filter(id= item.product_id).first()
+            order_product.stock = order_product.stock - item.quantity
+            order_product.save()
+
+            #  clear the cart after order placed
+            CartItem.objects.filter(user= request.user).delete()
+        
+        order.is_ordered = True
+        order.save()
+        ordered_product = OrderProduct.objects.filter(order_id= order.id)
+        cart_items = CartItem.objects.filter(user=request.user)
+
+        for cart_item in ordered_product:
+            total += (cart_item.product.price * cart_item.quantity)
+            quantity += cart_item.quantity
+          # checking coupon present or not in session
+        if request.session:
+            coupon_id = request.session.get('coupon_id')
+            try:
+                coupon = Coupon.objects.get(id=coupon_id)
+                discount_amount = order.order_total*coupon.discount/100
+                final_price = order.order_total-(discount_amount)
+                new_total = final_price 
+            except:
+                pass
 
     context = {
         'order' : order,
-        
+        'ordered_product' : ordered_product,
+        'order_number' : order.order_number,
+        'payment_id' : payment_id,
+        'payment' : order.payment,
+        'cart_items' : cart_items,
+        'subtotal' : total,
+        'tax' : order.tax,
+        'grand_total' : order.order_total,
+        'shipping' : 50,
+        'total' : order.order_total,
+        'coupon' : coupon,
+        'new_total' : new_total,        
     }
-    return render(request,'store/razor_success.html',context)
+    return render(request,'store/invoice.html',context)
 
 def coupon_apply(request):
     now = timezone.now()
@@ -363,7 +411,7 @@ def coupon_apply(request):
     if form.is_valid():
         code = form.cleaned_data['code']
         try:
-            coupon = Coupon.objects.get(code__iexact=code, valid_from__lte=now, valid_to__gte=now, is_active=True)
+            coupon = Coupon.objects.get(code__iexact=code, is_active=True)
             request.session['coupon_id'] = coupon.id
         except Coupon.DoesNotExist:
             request.session['coupon_id'] = None
@@ -372,22 +420,27 @@ def coupon_apply(request):
     return redirect('cart')
 
 
-def updateCart(request):
-    data = json.loads(request.body)
-    product_id = data['product_id']
-    action = data['action']
-    if request.user.is_authenticated:
-        customer = request.user
-        product = Product.objects.get(product_id= product_id)
-        cart, created = Cart.objects.get_or_create(owner=customer, completed=False)
-        cartitems, created = Cartitems.objects.get_or_create(product=product, cart=cart)
+def addcart(request):
+    if request.method == 'POST':
+        prod_id = request.POST.get('product_id')
+        if(CartItem.objects.filter(user=request.user, product_id=prod_id)):
+            cart = CartItem.objects.get(product_id=prod_id, user=request.user)
+            cart.quantity += 1
+            cart.save()
+            print(cart.quantity)
+            return JsonResponse({'status': 'Update Successfully'})
+    return redirect('/')
 
-        if action == 'add':
-            cartitems.quantity += 1
-        cartitems.save()
-
-        msg = {
-            'quantity': cart.cartquantity
-        }
-
-    return JsonResponse(msg, safe=False)
+def lesscart(request):
+    if request.method == 'POST':
+        prod_id = request.POST.get('product_id')
+        if(CartItem.objects.filter(user=request.user, product_id=prod_id)):
+            cart = CartItem.objects.get(product_id=prod_id, user=request.user)
+            if cart.quantity > 1:
+                cart.quantity  -= 1
+            else:
+                cart.delete()
+            cart.save()
+            print(cart.quantity)
+            return JsonResponse({'status': 'Update Successfully'})
+    return redirect('/')

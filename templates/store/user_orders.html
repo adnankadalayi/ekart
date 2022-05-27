@@ -70,10 +70,10 @@
 														{% for item in orders %}
 														<tr>
 															<th>
-																<a href="{% url 'order_details' item.order.tracking_no %}" class="btn-btn-primary-outline"><img width="60px" src="{{item.product.product_img_0.url}}" alt="Product image"></a>
+																<a href="{% url 'order_details' item.order.order_number %}" class="btn-btn-primary-outline"><img width="60px" src="{{item.product.product_img_0.url}}" alt="Product image"></a>
 															</th>
 															<th>
-																<a href="{% url 'order_details' item.order.tracking_no %}" class="btn-btn-primary-outline">{{item.product}}</th></a>
+																<a href="{% url 'order_details' item.order.order_number %}" class="btn-btn-primary-outline">{{item.product}}</th></a>
 															<th>{{item.product_price}}</th>
 															<th>{{item.created_at}}</th>
 															<th>{{item.order.status}}</th>

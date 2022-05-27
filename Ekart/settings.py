@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-#lgo^9wf@hzl--+a6(7$5to*$8g(l$tez9i+c_x-n0w*!-6hut'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -49,7 +50,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -92,12 +92,20 @@ AUTH_USER_MODEL = 'accounts.Accounts'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ekart_database_aws',
-        'USER' : 'postgres',
-        'PASSWORD' : '12345678',
-        'HOST' : 'database-1.cvx4oqwtfdg3.ap-south-1.rds.amazonaws.com',
+        'NAME': 'd2vugulp6j13vb',
+        'USER' : 'jmsskqpvbqkkdx',
+        'PASSWORD' : '5a40638568e00c6f5a9c86affec2ae80076dde592b17e2c363d269311caef849',
+        'HOST' : 'ec2-3-228-235-79.compute-1.amazonaws.com',
         'PORT' : '5432'
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'ekart',
+    #     'USER' : 'postgres',
+    #     'PASSWORD' : '1234',
+    #     'HOST' : 'localhost',
+    #     'PORT' : '5432'
+    # }
 }
 
 
@@ -140,6 +148,10 @@ STATICFILES_FINDERS = [
 
 ]
 STATIC_URL = 'static/'
+django_heroku.settings(locals())
+# STATICFILES_DIRS = [
+#     os.path.join('static')
+# ]
 STATIC_ROOT = BASE_DIR / 'static'
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
@@ -167,3 +179,13 @@ MESSAGE_TAGS = {
 
 RAZOR_KEY_ID='rzp_test_hEUUNfBlbyKiTo'
 RAZOR_KEY_SECRET = 'Sdrbfx3nVJM9G8BhHxmRsg0g'
+
+
+
+
+TIME_INPUT_FORMATS = [
+    '%I:%M %p',
+    '%H:%M:%S',
+    '%H:%M:%S.%f',
+    '%H:%M'
+]

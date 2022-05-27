@@ -167,11 +167,11 @@
                                                         {% elif cart_item.product.category.cate_offers.discount %}
                                                         ₹{{cart_item.product.category.cate_offers.discount|mul:cart_item.product.price|intdiv:100|sub:cart_item.product.price|abs}}
                                                         {% else %}
-                                                        ₹{{cart_item.product.price}}
+                                                        <b>x {{cart_item.quantity}}</b> ₹{{cart_item.product.price}}
                                                         {% endif %}</td>
                                                         
                                                 </tr>
-                                                <p class="text-danger">Coupon Applied = ₹{{coupon.discount }} off</p>
+                                                <p class="text-danger">Coupon Applied = {{coupon.discount }}% off</p>
 
                                             {% else %}
                                                 <tr>

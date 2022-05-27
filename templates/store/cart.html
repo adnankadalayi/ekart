@@ -72,15 +72,20 @@
                                         {% endif %}
                                     </td>
                                     <td class="quantity-col">
-                                        <div class="cart-product-quantity">
+                                        <div class="cart-product-quantity product_data">
+                                            <!-- AJAX FOR QUANTITY UPDATING -->
+                                            <!-- CSRFToken -->
+                                            <input type="hidden" class="prod_id" value="{{cart_item.product.id}}">
+                                            {% csrf_token %}
+                                            <!-- --------- -->
                                             {% if cart_item.quantity == 1%}
                                             {% else%}
-                                            <a  href="{% url 'remove_cart' cart_item.product.id %}">-</a>
+                                            <button  class=" lessQuantity" style="margin-left: 25%;" >-</button>
+                                            <!-- <a class="changeQuantity" href="{% url 'remove_cart' cart_item.product.id %}">-</a> -->
                                             {% endif %}
-                                            <!-- <a class="minus_cart btn" pid="{{cart_item.product.id}}">-</a> -->
-                                            <input type="text"  value="{{cart_item.quantity}}" title="Quantity" class="input-text qty text" size="1" >
-                                            <!-- <a class="plus_cart btn" pid="{{cart_item.product.id}}">+</a> -->
-                                            <a href="{% url 'add_cart' cart_item.product.id %}">+</a>
+                                            <input type="text"  value="{{cart_item.quantity}}" class="input-text qty-input text" size="3" >
+                                            <button  class=" addQuantity" style="margin-left: 25%;" >+</button>
+                                            <!-- <a class="changeQuantity" href="{% url 'add_cart' cart_item.product.id %}">+</a> -->
                                         </div><!-- End .cart-product-quantity -->
                                     </td>
                                     <td class="total-col">
@@ -92,7 +97,7 @@
                                         ₹{{cart_item.product.price}}
                                         {% endif %}
                                     </td>
-                                    <td class="remove-col"><a href="{% url 'remove_cart_item' cart_item.product.id %}" class="btn-remove delete_btn"><i class="icon-close"></i></a></td>
+                                    <td class="remove-col"><a  data-id = {{cart_item.product.id}} class="btn-remove delete_btn"><i class="icon-close"></i></a></td>
                                 </tr>
                            
                                {% endfor %}
@@ -113,7 +118,6 @@
                                 </form>
                             </div><!-- End .cart-discount -->
 
-                            <a href="{%url 'cart' %}" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i class="icon-refresh"></i></a>
                         </div><!-- End .cart-bottom -->
                     </div><!-- End .col-lg-9 -->
                     <aside class="col-lg-3">
@@ -131,24 +135,24 @@
                                         <td>₹{{total}}</td>
                                     </tr><!-- End .summary-subtotal -->
                                     {% if coupon %}
-                                    <tr class="summary-shipping">
-                                        <td><p>Coupon :</td></p>
-                                        <td> <p><span class="text-danger">"{{coupon.code}}" </span> ₹{{coupon.discount }} off</td></p>
-                                    </tr><!-- End .summary-subtotal -->
-                                    <tr class="summary-shipping">
-                                        <td> <p>Coupon Discount: </td></p>
-                                        <td> <p>{{final_price}}</td></p>
-                                    </tr><!-- End .summary-subtotal -->
                                     
                                     <tr class="summary-shipping">
                                         <td>Shipping:</td>
                                         <td>₹{{shipping}}</td>
                                     </tr>
-                                   
+                                    
                                     <tr class="summary-shipping">
                                         <td>Tax:</td>
                                         <td>₹{{new_tax}}</td>
                                     </tr>
+                                    <tr class="summary-shipping">
+                                        <td><p>Coupon :</td></p>
+                                        <td> <p><span class="text-danger">"{{coupon.code}}" </span> {{coupon.discount }}% off</td></p>
+                                    </tr><!-- End .summary-subtotal -->
+                                    <tr class="summary-shipping">
+                                        <td> <p>Coupon Discount: </td></p>
+                                        <td> <p>{{discount_amount}}</td></p>
+                                    </tr><!-- End .summary-subtotal -->
                                     <tr class="summary-total">
                                         <td>Total:</td>
                                         <td>₹{{new_total}}</td>
@@ -207,13 +211,13 @@
                 .then((willDelete) => {
                     if (willDelete) {
 
-                       /* swal("Your banner has been deleted!", {
+                        swal("Your product removed from cart!", {
 
                             icon: "success",
 
 
-                        }); */
-                        window.location = `banner/delete/${value}`
+                        }); 
+                        window.location = `remove_cart_item/${value}`
                     }
                 });
         })

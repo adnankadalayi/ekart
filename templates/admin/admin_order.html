@@ -61,7 +61,7 @@
                                     <th>{{item.order.order_number}}</th>
                                     <th>{{item.order.status}}</th>
 									    <th>
-                        {% if item.order.status == 'Cancelled' or item.order.status == 'Returned' %}
+                        {% if item.order.status == 'Cancelled' or item.order.status == 'Returned' or item.order.status == 'Delivered' %}
                         Can't Change
                         {% else %}
 										    <div class="dropdown">

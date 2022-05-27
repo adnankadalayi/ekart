@@ -60,7 +60,7 @@ def register(request):
                 user.phone_no = phone_no
                 user.save()
 
-            # otp account varification
+            # otp account verification
             request.session["mobile"] = phone_no
             user = Accounts.objects.filter(phone_no=phone_no)
 
@@ -188,7 +188,7 @@ def verify(request, **generated_otp):
 
 @login_required(login_url='loginPage')
 def user_orders(request):
-    orders = OrderProduct.objects.filter(user = request.user)
+    orders = OrderProduct.objects.filter(user = request.user).order_by('-created_at')
     context = {
         'orders':orders
     }

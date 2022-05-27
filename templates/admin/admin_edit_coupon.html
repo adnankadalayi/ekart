@@ -124,10 +124,9 @@
     </script>
     <!-- prevent selecting previous date in datetimefield -->
     <script>
-      var today = new Date().toISOString().slice(0, 16);
-
-      document.getElementsByName("valid_from")[0].min = today;
-      document.getElementsByName("valid_to")[0].min = today;
+      var today = new Date().toISOString().split('T')[0];
+      document.getElementsByName("valid_from")[0].setAttribute('min', today); 
+      document.getElementsByName("valid_to")[0].setAttribute('min', today); 
     </script>
     
      <!-- field validtion -->

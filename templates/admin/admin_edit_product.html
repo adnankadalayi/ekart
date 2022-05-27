@@ -45,6 +45,10 @@
           width: 10px;
           background-color: rgb(246, 223, 223);
         }
+        #id_is_trending{
+          width: 10px;
+          background-color: rgb(246, 223, 223);
+        }
         
     </style>
   </head>
@@ -66,6 +70,14 @@
            This field is required
          </div>
          </div>
+
+         <div class="form-group mt-2">
+          <label for="">{{ form.is_trending.label}}</label>
+          {{ form.is_trending }}
+          <div class="invalid-feedback">
+          This field is required
+        </div>
+        </div>
        
         <div class="form-group mt-2">
           <label for="">{{form.category.label}}</label>

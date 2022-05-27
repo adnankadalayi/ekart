@@ -1,4 +1,5 @@
-import random 
+import random
+import string
 from django.shortcuts import render, redirect
 from accounts.models import Accounts, Address
 from cart .models import Cart, CartItem
@@ -30,7 +31,7 @@ def render_to_pdf(template_src, context_dict={}):
 class DownloadPDF(View):
 	def get(self, request, *args, **kwargs):
 		
-		pdf = render_to_pdf('store/invoice_content.html', data)
+		pdf = render_to_pdf('store/invoice_content.html')
 
 		response = HttpResponse(pdf, content_type='application/pdf')
 		filename = "Invoice_%s.pdf" %("12341231")
@@ -167,6 +168,8 @@ def place_order(request, total=0, quantity=0):
     tax = 0
     grand_total = 0
     shipping = 50
+    coupon = 0 
+    new_total = 0  
 
     data = Order()
     
@@ -233,10 +236,22 @@ def place_order(request, total=0, quantity=0):
         order.pin                = pin
         order.save()        
             
-        track_number        = 'order'+str(random.randint(1111111,9999999))
+        track_number        = ''.join(random.choices(string.digits + string.ascii_uppercase, k=17))
         while Order.objects.filter(tracking_no=track_number) is None:
-            track_number        = 'order'+str(random.randint(1111111,9999999))
+            track_number        = ''.join(random.choices(string.digits + string.ascii_uppercase, k=17))
         order.tracking_no    = track_number
+        order.save()
+        payment = Payment(
+            user = request.user,
+            payment_id = ''.join(random.choices(string.digits + string.ascii_uppercase, k=17)),
+            payment_method = 'Cash On Delivery',
+            amount_paid = order.order_total,
+            status = 'Order Placed',
+
+        )
+        payment.save()
+
+        order.payment = payment
         order.save()
 
         # create a object for this 
@@ -258,26 +273,42 @@ def place_order(request, total=0, quantity=0):
 
             #  clear the cart after order placed
             CartItem.objects.filter(user= request.user).delete()
-            messages.success(request, 'Your order has been placed Successfully.')  
         
         order.is_ordered = True
         order.save()
-    
+        ordered_product = OrderProduct.objects.filter(order_id= order.id)
+         # checking coupon present or not in session
+        if request.session:
+            coupon_id = request.session.get('coupon_id')
+            try:
+                coupon = Coupon.objects.get(id=coupon_id)
+                discount_amount = grand_total*coupon.discount/100
+                final_price = grand_total-(discount_amount)
+                new_total = final_price 
+            except:
+                pass
         context = {
             'order': order,
+            'ordered_product' : ordered_product,
+            'order_number' : order.order_number,
+            'payment_id' : payment.payment_id,
+            'payment' : order.payment,
             'cart_items' : cart_items,
-            'total':total,
+            'subtotal':cart_item.product.price * cart_item.quantity,
             'tax':tax,
             'grand_total': grand_total,
             'shipping' : shipping,
+            'total' : order.order_total,
+            'coupon' : coupon,
+            'new_total' : new_total,
         }
-        return render(request,'store/order_status.html',context)
+        return render(request,'store/invoice.html',context)
     else:
         return redirect('checkout')
 
 
-def order_details(request, tr_no):
-    order = Order.objects.filter(tracking_no= tr_no).filter(user= request.user).first()
+def order_details(request, ord_no):
+    order = Order.objects.filter(order_number= ord_no).filter(user= request.user).first()
     order_items = OrderProduct.objects.filter(order= order)
     context = {
         'order':order,
@@ -291,6 +322,5 @@ def return_order(request, order_number):
     order = Order.objects.get( order_number= order_number)
     order.status = 'Returned'
     order.save()
-    
     return redirect('user_orders')
     

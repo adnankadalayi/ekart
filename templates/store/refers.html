@@ -66,22 +66,20 @@
 									<h6 class="text-danger text-center">You don't have any Recommadations</h6>
 									{% endif %}
 
-									<!-- <h5 class="d-inline">Your Referral Link : &nbsp;&nbsp;	</h5> <a href="/{{ your_code }}"><b>  Referal Link</b></a> -->
-									<div class="input-group input-group-sm mb-3">
-										<span class="input-group-text" id="inputGroup-sizing-sm">Small</span>
-										<input value="{{request.get_host }}/{{ your_code }}" id="myInput" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+									<h5 class="d-inline">Your Referral Link : </h5> 	
+									<div>
+										<!-- <textarea id="textbox"></textarea><br /> -->
+										<!-- <input value="www.{{ request.get_host }}/{{ your_code }}" type="text" value="Hello World" id="textbox">
+										<button onclick="copyText()">Copy</button>
+										<br />
+										<h1>Copied Text:</h1><br /> -->
+										<div class="input-group mt-2 ml-5">
+											<!-- <input value="www.{{ request.get_host }}/{{ your_code }}" type="text" id="textbox" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2"> -->
+											<input  value="{{ request.get_host }}/{{ your_code }}" type="text" id="textbox">
+											<button onclick="copyText()" class="btn btn-outline-primary-2 ml-1">Click to Copy</button>
+										  </div>
 									</div>
 
-									<div class="tooltip">
-									<button onclick="myFunction()" onmouseout="outFunc()"
-											type="button" class="btn btn-secondary"
-											data-bs-toggle="tooltip" data-bs-placement="top"
-											data-bs-custom-class="custom-tooltip"
-											title="This top tooltip is themed via CSS variables.">
-									<span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
-									Copy text
-									</button>
-									</div>
 
 
 								</div>
@@ -93,20 +91,36 @@
         </main><!-- End .main -->
 {% block scripts %}
 <script>
+	function copyText() {
+      
+		/* Select text area by id*/
+		var Text = document.getElementById("textbox");
+
+		/* Select the text inside text area. */
+		Text.select();
+
+		/* Copy selected text into clipboard */
+		navigator.clipboard.writeText(Text.value);
+
+		/* Set the copied text as text for 
+		div with id clipboard */
+		document.getElementById("clipboard")
+			.innerHTML = Text.value;
+	}
 	function myFunction() {
-	  var copyText = document.getElementById("myInput");
-	  copyText.select();
-	  copyText.setSelectionRange(0, 99999);
-	  navigator.clipboard.writeText(copyText.value);
+		var copyText = document.getElementById("myInput");
+		copyText.select();
+		copyText.setSelectionRange(0, 99999);
+		navigator.clipboard.writeText(copyText.value);
+		
+		var tooltip = document.getElementById("myTooltip");
+		tooltip.innerHTML = "Copied: " + copyText.value;
+	  }
 	  
-	  var tooltip = document.getElementById("myTooltip");
-	  tooltip.innerHTML = "Copied: " + copyText.value;
-	}
-	
-	function outFunc() {
-	  var tooltip = document.getElementById("myTooltip");
-	  tooltip.innerHTML = "Copy to clipboard";
-	}
+	  function outFunc() {
+		var tooltip = document.getElementById("myTooltip");
+		tooltip.innerHTML = "Copy to clipboard";
+	  }
 	</script>
-{% enblock scripts %}
+{% endblock scripts %}
 {% endblock %}

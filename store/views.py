@@ -60,14 +60,14 @@ def store(request, category_slug=None):
         
         # order by price
         order_by = request.GET.get("price") 
-        if order_by == "1000": 
-            products = Product.objects.all().filter(price__lte=1000.00)
-        elif order_by == "10000":
+        if order_by == "500": 
+            products = Product.objects.all().filter(price__lte=500)
+        elif order_by == "1000":
+            products = Product.objects.all().filter(price__lte=1000)
+        elif order_by =='5000':
+            products = Product.objects.all().filter(price__lte=5000)
+        elif order_by =='10000':
             products = Product.objects.all().filter(price__lte=10000)
-        elif order_by =='50000':
-            products = Product.objects.all().filter(price__lte=50000)
-        elif order_by =='100000':
-            products = Product.objects.all().filter(price__lte=100000)
 
         p = Paginator(products, 4)
         page = request.GET.get('page')
