@@ -46,10 +46,10 @@
 
                     <div class="col-md-6">
                         <div class="product-details">
-                            {% if single_product.prod_offers.discount > single_product.category.cate_offers.discount %}
+                            {% if single_product.prod_offers.discount %}
                             <h6><span class="badge badge-warning">{{single_product.prod_offers.discount}}% off</span></h6>
                             
-                            {% elif single_product.prod_offers.discount < single_product.category.cate_offers.discount %}
+                            {% elif single_product.category.cate_offers.discount %}
                             <h6><span class="badge badge-success ">{{ single_product.category.cate_offers.discount}}% off</span></h6>
                             {% elif single_product.category.cate_offers.discount %}
                             <h6><span class="badge badge-success ">{{ single_product.category.cate_offers.discount}}% off</span></h6>
@@ -65,10 +65,10 @@
                             </div><!-- End .rating-container -->
 
                             <div class="product-price">
-                                {% if single_product.prod_offers.discount > single_product.category.cate_offers.discount %}
+                                {% if single_product.prod_offers.discount  %}
                                 ₹{{single_product.prod_offers.discount|mul:single_product.price|intdiv:100|sub:single_product.price|abs}}&nbsp;&nbsp;
                                 <del class="text-light"> ₹ {{single_product.price}}</del>
-                                {% elif single_product.prod_offers.discount < single_product.category.cate_offers.discount %}
+                                {% elif  single_product.category.cate_offers.discount %}
                                 ₹{{single_product.category.cate_offers.discount|mul:single_product.price|intdiv:100|sub:single_product.price|abs}}&nbsp;&nbsp;
                                 <del class="text-light"> ₹ {{single_product.price}}</del>
                                 {% else %}

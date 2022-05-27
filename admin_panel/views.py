@@ -24,6 +24,7 @@ from cart.models import Coupon
 
 
 def dashboard(request):
+    total = 0
     users = Accounts.objects.all().count()
     users_date  = Accounts.objects.annotate(day=ExtractDay('date_joined')).values('day').annotate(total=Count('id'))
     orders      = OrderProduct.objects.annotate(day=ExtractDay('created_at')).values('day').annotate(total=Count('id'))
@@ -34,7 +35,6 @@ def dashboard(request):
 
     for i in ordered_product:
         total = 0 + i.product.price
-    print(total)
 
     orders_count = []
     orders_date = []

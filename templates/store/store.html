@@ -74,9 +74,9 @@
                                         <div class="product">
                                             <figure class="product-media">
 												<!-- product offer badge -->
-												{% if product.prod_offers.discount > product.category.cate_offers.discount %}
+												{% if product.prod_offers.discount %}
                                                 <span class="product-label label-new">{{product.prod_offers.discount}}% off</span>
-                                                {% elif product.prod_offers.discount < product.category.cate_offers.discount %}
+                                                {% elif product.category.cate_offers.discount %}
 												<span class="product-label label-new">{{ product.category.cate_offers.discount}}% off</span>
                                                 {% else %}
                                                 {% endif %}
