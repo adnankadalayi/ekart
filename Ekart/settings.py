@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 import django_on_heroku
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -47,6 +50,7 @@ INSTALLED_APPS = [
     'orders',
     'banner',
     'mathfilters',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -181,12 +185,12 @@ MESSAGE_TAGS = {
 RAZOR_KEY_ID='rzp_test_hEUUNfBlbyKiTo'
 RAZOR_KEY_SECRET = 'Sdrbfx3nVJM9G8BhHxmRsg0g'
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
 
-
-
-TIME_INPUT_FORMATS = [
-    '%I:%M %p',
-    '%H:%M:%S',
-    '%H:%M:%S.%f',
-    '%H:%M'
-]
+# adding config
+cloudinary.config( 
+  cloud_name = "df5c6jseq", 
+  api_key = "798429858164742", 
+  api_secret = "zROy-oEn7YwYEqn2aDnXW3OBYKk" 
+)
